@@ -1,0 +1,29 @@
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    /* encima e em abaixo e pro lado e pro outro */
+    margin: 10px 20px 10px 15px;
+    padding: 5px;
+    text-decoration: none;
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;    
+    color: #3c868b;
+    border: 2px solid #0000003f;
+    border-radius: 10px;
+    transition: .75s;
+    
+}
+
+nav a:hover{
+    box-shadow: 1px 1px 3px 3px;
+}
+
+.active {
+    background-color: #9fbd323f;
+    border: 1px solid #3c868b;
+    border-radius: 9px;
+    color: rgb(228, 126, 30)
+}
