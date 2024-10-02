@@ -1,0 +1,46 @@
+.posts {    
+    justify-items: column;
+    align-items: center;
+    font-family: "Afacad Flux", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-size: 20px;
+    padding: 2em 12em;
+    color: #fff;
+    border: transparent 2px #f21;
+    border-radius: 15px;
+    background-color: #080808;
+}
+
+.posts img{
+    align-items: center;
+    justify-content: center;
+    max-width: 350px;
+    margin: 2px 2px;    
+}
+
+.tags{
+    color: rgb(14, 235, 187);
+    display: flex;    
+}
+
+.tags span{
+    margin-left: 14px;
+}
+
+.createdUser {
+      margin: 20px 3px;
+      font-size: 2em;
+      font-weight: 100;
+      text-transform: capitalize;
+}
+
+.body {
+    font-weight: 350;
+    font-size: 27px;
+}
+
+.createdUser a {
+    text-decoration: none;
+    color: aliceblue;
+}

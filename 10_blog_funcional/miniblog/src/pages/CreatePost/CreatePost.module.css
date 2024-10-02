@@ -1,0 +1,29 @@
+.create_post {
+    text-align: center;
+}
+
+.create_post h1 {
+    font-size: 2.2em;
+}
+
+.create_post p {
+    color: #aaa;
+    margin-bottom: 2em;
+}
+
+.messages {
+    font-size: 18px;
+    margin: 10px 10px;
+    padding: 10px 10px;
+    border: 1px solid #3e8310;
+    border-radius: 3px;
+    align-items: center;        
+    background-color: #5c9b1aa9;
+    color: #fff;
+    transition: 1.80s;
+}
+
+.messages:hover {
+    background-color: #91ee53;
+    color: #160216
+}

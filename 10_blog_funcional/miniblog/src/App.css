@@ -1,0 +1,9 @@
+.container {
+  /* vh é utilizado para comportar o maior número de dispositivos possível */
+  min-height: 70vh;
+  /* margin-bottom: 1em; */
+  color: rgb(21, 21, 22);
+  background-color: rgb(17, 16, 16);
+  color: aliceblue;
+}
+
