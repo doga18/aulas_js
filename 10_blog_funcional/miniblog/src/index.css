@@ -1,0 +1,150 @@
+body {
+  background-color: #a8a79a;
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: "Montserrat", sans-serif;
+  color: #aaa;
+}
+
+input::focus,
+textarea::focus {
+  outline: none;
+}
+
+a,
+nav button {
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  color: black;
+  transition: .4s;
+  cursor: pointer;
+  font-family: "Monteserrat", sans-serif;
+}
+
+a:hover
+nav button:hover {
+  color: #bbb;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* form stles */
+
+form {
+  max-width: 40%;
+  margin: 0 auto;  
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1px;
+}
+
+label span {
+  margin-bottom: .3em;
+  font-weight: bold;
+  text-align: left;
+}
+
+input,
+textarea {
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  padding: .9em 0;
+  background-color: transparent;
+}
+
+/* stilos gerais para botões */
+
+.btn {
+  background-color: rgb(208, 222, 235);
+  font-weight: bold;
+  margin: 10px auto;
+  border-radius: .35em;
+  min-width: 50vh;  
+  min-height: 5vh;
+  font-size: 3vh;
+  font-family: "Montserrat", sans-serif;
+  /* background-color: transparent; */
+  transition: .75s;
+  cursor: pointer;
+  /* border none significa que a borda não ficara marcada mas tera borda */
+  border: none;
+  font-size: 1.25em;
+  margin: 10px;
+}
+
+.btn:hover {
+  background-color: #74b87a;
+  color: #fff
+}
+
+.btn.btn-dark {
+  background-color: #000;
+  color: #fff;
+  border-radius: 0;
+  font-size: 2em;
+  border: 1px solid #01500e;
+}
+
+.btn.btn-dark:hover {
+  background-color: #d1d4e4;
+  color: #2b274e;
+}
+
+.btn.btn-outline {
+  background-color: transparent;
+  border-radius: 0;
+  color: #fdfdfd;
+  border: 1px solid #d5f5d2;
+  padding: 2px 1.5em;
+}
+
+.btn.btn-outline:hover {
+  background-color: #f7f2f2;
+  color: #040111
+
+}
+
+.btn.btn-danger:hover {
+  background-color: #dc3545;
+}
+
+button[disabled] {
+  background-color: #aaa;
+}
+
+.container .error {
+  color: #721c24;
+  margin: 20px 100vh;
+  background-color: #f8d7da;
+  border: 1px solid #f6c6cb;
+  padding: 5px;
+  margin: 14px 5px 14px 5px;
+  border-radius: 5px;
+}
+
+.container .messages {
+  align-items: center;
+  text-align: center;
+  color: rgb(246, 252, 246);  
+  background-color: #53753d;
+  border: 1px solid #7bdb93;
+  padding: 5px;
+  margin: 14px 5px 14px 5px;
+  border-radius: 5px;
+}
+

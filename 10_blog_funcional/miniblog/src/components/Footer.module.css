@@ -1,0 +1,18 @@
+footer {
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    background-color: #070707;
+    color: aliceblue;
+    margin-bottom:auto;
+}
+
+.itens {    
+    text-align: center;
+    display: grid;    
+}
+
+.itens span{
+    margin-top: 20px;
+}
