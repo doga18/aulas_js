@@ -1,5 +1,6 @@
-.posts {    
-    justify-items: column;
+.posts {
+    justify-items: center;
+    display: grid;
     align-items: center;
     font-family: "Afacad Flux", sans-serif;
     font-optical-sizing: auto;
@@ -10,12 +11,15 @@
     border: transparent 2px #f21;
     border-radius: 15px;
     background-color: #080808;
+    box-shadow: 0 4px 22px 10px rgba(241, 243, 243, 0.253);
+    margin-bottom: 2.75em;
 }
 
 .posts img{
     align-items: center;
     justify-content: center;
-    max-width: 350px;
+    max-width: 450px;
+    min-height: 350px;
     margin: 2px 2px;    
 }
 
@@ -38,6 +42,8 @@
 .body {
     font-weight: 350;
     font-size: 27px;
+    text-align: center;
+    align-items: center;
 }
 
 .createdUser a {

@@ -21,32 +21,43 @@ const Home = () => {
   //const [posts, setPosts] = useState([]);
   // Instanciando o hook de fetch de posts
   const {documents: posts, loading, error: errorPost} = useFetchDocuments("posts");
+  // Variável para informar alguma informação para o usuário.
+  const [msg, setMsg] = useState(null);
+  // Instanciando o navite para rediorecionamento.
+  const navigate = useNavigate();
 
 
   const handleSearch = (e) => {
     e.preventDefault()
-    console.log(`Valor escrito na busca ${query}`)
-  } 
+    if(query){
+      navigate(`/search?q=${query}`)
+    }else{
+      setMsg("Para realizar a pesquisa, você informar oque deseja pesquisar.")
+    }
+  }
 
-  console.log(posts);
-  console.log(loading);
-  console.log(errorPost);
-
+  useEffect(() => {
+    
+  }, [msg])
 
   return (
     <div className={styles.home}>
       <h1>Veja nossos Posts mais recentes</h1>
       <form onSubmit={handleSearch} className={styles.search_form}>
-        <input type="text" placeholder="Ou busque por tags..." onChange={(e) => setQuery(e.target.value)}/>
+        <input type="text" placeholder="Procure por #tags ou Conteúdo..." onChange={(e) => setQuery(e.target.value)}/>
         <button className="btn btn-dark">Pesquise</button>
       </form>
-      <div>
-        <h2>
-          
-        </h2>        
+      {msg && 
+        <div className="msg">
+          <span>
+            {{msg}}
+          </span>
+        </div>
+      }      
+      <div>        
         {loading && <p>Carregando...</p>}
         {posts && posts.map((post) => (
-          <div className={styles.list_posts}>
+          <div className={styles.list_posts} key={post.id}>
             <PostDetail post={post} uid={post.uid} />
           </div>          
         ))}

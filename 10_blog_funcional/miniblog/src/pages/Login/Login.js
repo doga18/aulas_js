@@ -46,10 +46,10 @@ const Login = () => {
       setError(authError)
     }
   }, [authError])
-
+  
   return (
-    <div className={styles.login}>
-        <form className={styles.register} onSubmit={handleLogin}>          
+    <div >
+        <form className={styles.login} onSubmit={handleLogin}>          
           <h1>
             Entre para postar
           </h1>

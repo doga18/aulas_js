@@ -22,7 +22,15 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
                 let q
                 //busca
                 //dashboard
-                q = await query(collectionRef, orderBy("createdAt", "desc"));
+                if(search){
+                    q = await query(collectionRef, where("list_tags", "array-contains", search), orderBy("createdAt", "desc"));
+
+                    console.log(`resultado da pesquisa no hook`);
+                    console.log(q);
+                }else{
+                    q = await query(collectionRef, orderBy("createdAt", "desc"));    
+                }
+                
                 await onSnapshot(q, (querySnapshot) => {
                     setDocuments(
                         querySnapshot.docs.map((doc) => ({

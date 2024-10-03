@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: "Afacad Flux", sans-serif;;
 }
 
 .search_form {
@@ -10,18 +11,21 @@
     width: 60%;
     display: flex;
     justify-content: center;
-    margin-bottom: 2em;
+    margin: .75em;
 
 }
 
 .search_form input {
     margin-right: 10px;
     width: 50%;
+    font-size: 24px;
+    text-align: center;
+    padding: 0;
 }
 
 .search_form button {
-    max-width: 20px;
-    max-height: 20px;
+    padding: 2px 25px;
+    max-height: auto;
 }
 
 .noposts {
@@ -37,5 +41,5 @@
 }
 
 .list_posts {
-    margin: 10px;
+    margin: 10px 15em;
 }

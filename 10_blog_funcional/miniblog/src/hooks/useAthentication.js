@@ -1,5 +1,5 @@
 // Para trabalhar com banco nesse arquivo, precisamos chamar a config do firebase.
-import { db } from "../firebase/config";
+import { db, auth } from "../firebase/config";
 //import { auth } from "../firebase/config";
 
 import {
@@ -17,9 +17,7 @@ export const useAuthentication = () => {
     const [loading, setLoading] = useState(null)
 
     // cleanup limpar funções
-    const [cancelled, setCancelled] = useState(false)
-
-    const auth = getAuth()
+    const [cancelled, setCancelled] = useState(false)    
 
     function checkIfIsCancelled(){
         if(cancelled){

@@ -20,7 +20,8 @@ import Register from "./pages/Register/Register";
 import About from "./pages/About/About";
 import CreatePost from "./pages/CreatePost/CreatePost"
 import Dashboard from "./pages/Dashboard/Dashboard"
-import Perfil from "./pages/Perfil/PerfilUser"
+// import Perfil from "./pages/Perfil/PerfilUser"
+import Search from './pages/Search/Search';
 
 // Importando componentes, para ir montando nosso site.
 import Navbar from "./components/Navbar";
@@ -50,13 +51,14 @@ function App() {
           <Navbar />
             <div className="container">        
               <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/' element={user ? <Home /> : <Navigate to="/login" />} />
                 <Route path='/about' element={<About />} />
-                <Route path='/login' element={!user ? <Login /> : <Navigate to="/home" />} />
-                <Route path='/register' element={!user ? <Register /> : <Navigate to="/home" />} />
+                <Route path='/login' element={!user ? <Login /> : <Navigate to="/" />} />
+                <Route path='/register' element={!user ? <Register /> : <Navigate to="/" />} />
                 <Route path='/posts/create' element={user ? <CreatePost /> : <Navigate to="/login" />} />
                 <Route path='/dashboard' element={user ? <Dashboard /> : <Navigate to="/login" />} />
-                <Route path='/Perfil/' element={user ? <Dashboard /> : <Navigate to="/login" />} />
+                {/* <Route path='/Perfil/' element={user ? <Perfil /> : <Navigate to="/login" />} /> */}
+                <Route path='/search' element={user ? <Search /> : <Navigate to="/login" />} />
               </Routes>
             </div>
           <Footer />
