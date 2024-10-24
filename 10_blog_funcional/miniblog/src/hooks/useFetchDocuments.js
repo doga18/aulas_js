@@ -34,26 +34,34 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
                 }
                 else if(uid) {
                     // Get the posts created by the user.
+                    console.log(`Cai no caso de busco por uid do usuário: ${uid} e o search ${search}`);
                     q = await query(collectionRef, 
                         where("uid", "==", uid),
                         orderBy("createdAt", "desc"));
-                    console.log(`Pesquisando posts criados pelo usuário de id ${uid}`)
+                    console.log(`essa é a pesquisa ${q}`);
+                    console.log(q);
                     //
                 }
                 else{
                     q = await query(collectionRef, orderBy("createdAt", "desc"));    
                 }
-                
-                await onSnapshot(q, (querySnapshot) => {
+                // Configurando o listener para atualizações em tempo real
+                const unsubscribe = onSnapshot(q, (querySnapshot) => {
                     setDocuments(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
                             ...doc.data(),
                         }))
-                    )
-                })
-                console.log(onSnapshot())
-                setLoading(false)
+                    );
+                    setLoading(false);
+                }, (error) => {
+                    console.error("Erro ao executar o snapshot: ", error);
+                    setError(error.message);
+                    setLoading(false);
+                });
+
+                // Retorna a função de unsubscribe para limpar o listener quando o componente desmontar
+                return unsubscribe;
             } catch (error) {
                 console.log(error)
                 setError(error.message)

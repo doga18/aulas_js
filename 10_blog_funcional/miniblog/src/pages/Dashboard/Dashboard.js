@@ -2,8 +2,8 @@ import React from 'react'
 import styles from './Dashboard.module.css'
 
 // Hooks Defaults
-import { onAuthStateChanged } from 'firebase/auth'
-import { useEffect, useState } from 'react'
+// import { onAuthStateChanged } from 'firebase/auth'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 // Hooks Personally
@@ -41,11 +41,10 @@ const Dashboard = () => {
         ) : (
           <div className="text">Tem posts</div>
         )}
-        {posts && posts.document_New.map((post) => (
-          <>
-            {post}
-          </>
-        ))}
+        {loading && <p>Carregando...</p>}
+        {error && <p>Desculpe, um erro ocorreu: {error}</p>}
+
+        {posts && !posts.length === 0 && <div className="algo">encontrado aglo</div> }
     </div>
   )
 }
