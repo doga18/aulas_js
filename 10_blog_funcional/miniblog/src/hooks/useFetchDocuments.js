@@ -21,8 +21,10 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
             console.log(`Os valores são uid: ${uid}`);
             console.log(`Os valores são search ${search}`);
 
+            let q;
+
             try {
-                let q
+                
                 //busca
                 //dashboard
                 console.log(`começando a busca por ${search}`)
@@ -34,7 +36,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
                 }
                 else if(uid) {
                     // Get the posts created by the user.
-                    console.log(`Cai no caso de busco por uid do usuário: ${uid} e o search ${search}`);
+                    console.log(`Cai no caso de busco por uid do usuário: ${uid} e o search `);
                     q = await query(collectionRef, 
                         where("uid", "==", uid),
                         orderBy("createdAt", "desc"));
@@ -45,23 +47,22 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
                 else{
                     q = await query(collectionRef, orderBy("createdAt", "desc"));    
                 }
-                // Configurando o listener para atualizações em tempo real
-                const unsubscribe = onSnapshot(q, (querySnapshot) => {
-                    setDocuments(
-                        querySnapshot.docs.map((doc) => ({
-                            id: doc.id,
-                            ...doc.data(),
-                        }))
-                    );
-                    setLoading(false);
-                }, (error) => {
-                    console.error("Erro ao executar o snapshot: ", error);
-                    setError(error.message);
-                    setLoading(false);
-                });
-
-                // Retorna a função de unsubscribe para limpar o listener quando o componente desmontar
-                return unsubscribe;
+                try {
+                    await onSnapshot(q, (querySnapshot) => {
+                        console.log(`resultado da consulta`);
+                        console.log(querySnapshot);
+                        setDocuments(
+                            querySnapshot.docs.map((doc) => ({
+                                id: doc.id,
+                                ...doc.data(),
+                            }))
+                        )
+                    })                    
+                } catch (error) {
+                    console.error(error)
+                    setError(error.message)
+                }                
+                setLoading(false)
             } catch (error) {
                 console.log(error)
                 setError(error.message)
