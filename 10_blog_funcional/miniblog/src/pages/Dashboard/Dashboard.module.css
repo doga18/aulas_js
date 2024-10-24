@@ -1,0 +1,39 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;    
+}
+
+.name_user {
+    text-transform: capitalize;
+}
+
+.no_posts_user {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    margin-top: 20px;    
+}
+
+.no_posts_user a {
+    margin-top: 15%;
+    font-size: 32px;
+    border: 4px solid black;
+    color: aliceblue;
+    background-color: rgb(54, 71, 38);
+    padding: 10px 10px;
+    transition: .35s;
+}
+
+.no_posts_user a:hover {
+    background-color: rgb(188, 252, 129);
+    color: black;
+}
+
+.no_posts_user span{
+    color:rgb(196, 77, 77);
+    font-weight: bold;
+    font-size: 22px;
+}

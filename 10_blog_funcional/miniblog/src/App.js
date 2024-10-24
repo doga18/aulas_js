@@ -22,6 +22,7 @@ import CreatePost from "./pages/CreatePost/CreatePost"
 import Dashboard from "./pages/Dashboard/Dashboard"
 // import Perfil from "./pages/Perfil/PerfilUser"
 import Search from './pages/Search/Search';
+import Post from './pages/Post/Post';
 
 // Importando componentes, para ir montando nosso site.
 import Navbar from "./components/Navbar";
@@ -56,9 +57,11 @@ function App() {
                 <Route path='/login' element={!user ? <Login /> : <Navigate to="/" />} />
                 <Route path='/register' element={!user ? <Register /> : <Navigate to="/" />} />
                 <Route path='/posts/create' element={user ? <CreatePost /> : <Navigate to="/login" />} />
-                <Route path='/dashboard' element={user ? <Dashboard /> : <Navigate to="/login" />} />
+                <Route path='/dashboard/:id' element={user ? <Dashboard /> : <Navigate to="/login" />} />
                 {/* <Route path='/Perfil/' element={user ? <Perfil /> : <Navigate to="/login" />} /> */}
                 <Route path='/search' element={user ? <Search /> : <Navigate to="/login" />} />
+                <Route path='/post/:id' element={user ? <Post /> : <Navigate to="/login" />} />
+
               </Routes>
             </div>
           <Footer />

@@ -3,6 +3,7 @@
     display: grid;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 
@@ -20,4 +21,16 @@
 
 .search_container p {
     margin-bottom: 30px;
+}
+
+.noposts {
+    text-align: center;
+}
+
+.noposts a {
+    margin: 20px 10px 20px 10px;
+}
+
+.noposts p {
+    font-size: 25px;
 }

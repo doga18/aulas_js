@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Search.module.css'
 import { useState, useEffect } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFetchDocuments } from '../../hooks/useFetchDocuments';
 import { useQuery } from '../../hooks/useQuery';
 // Post Detail
@@ -9,23 +9,26 @@ import PostDetail from '../../components/PostDetail';
 
 const Search = () => {
 
+    const navigate = useNavigate();
+
     const query = useQuery();
     const search = query.get("q");
-    const [newSearch, setNewSearch] = useState(search);
+    const [newSearch, setNewSearch] = useState('');
     const [msg, setMsg] = useState(null);
     const {documents: posts, loading, error} = useFetchDocuments("posts", search);
 
-    console.log(`Valor vindo no Q é ${search}`);
-
-    console.log(`Resultado da pesquisa ${posts}`);
+    console.log(`O search é? ${search}`)
+    console.log(posts)
+   
 
     useEffect(() => {
       if(!posts){
         setMsg("Nada encontrado!")
       }else{
         setMsg(null);
+        console.log(`valor dos postos é de ${posts.length}`)
       }
-    }, [msg, posts])
+    }, [posts])
 
     useEffect(() => {
       if(error){
@@ -33,15 +36,10 @@ const Search = () => {
       }
     }, [error])
 
-    useEffect(() => {
-      if(search !== newSearch){
-        setNewSearch(newSearch);
-      }
-    }, [newSearch])
-
     const handleNewSearch = (e) => {
       e.preventDefault()
-      console.log(`O novo valor digitado na pesquisa é ${query}`)
+      console.log(`O novo valor digitado na pesquisa é ${newSearch}`)
+      navigate(`/search?q=${newSearch}`)
     }
 
   return (
@@ -70,9 +68,17 @@ const Search = () => {
         </h1>
       </div>
       }
-      {posts &&
+      {posts && posts.length === 0 && (
+        <div className={styles.noposts}>
+          <p>Não foram encontrados posts a partir da sua busca...</p>
+          <Link to="/" className="btn btn-dark">
+            Voltar
+          </Link>
+        </div>
+      )}
+      {posts && 
         <div className={styles.list_posts}>
-          <h1>Achou algo!</h1>          
+          
           {posts.map((post) => (
             <PostDetail post={post} uid={post.uid} />
           ))}

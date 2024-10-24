@@ -18,16 +18,29 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
 
             const collectionRef = await collection(db, docCollection)
 
+            console.log(`Os valores são uid: ${uid}`);
+            console.log(`Os valores são search ${search}`);
+
             try {
                 let q
                 //busca
                 //dashboard
+                console.log(`começando a busca por ${search}`)
                 if(search){
                     q = await query(collectionRef, where("list_tags", "array-contains", search), orderBy("createdAt", "desc"));
 
                     console.log(`resultado da pesquisa no hook`);
                     console.log(q);
-                }else{
+                }
+                else if(uid) {
+                    // Get the posts created by the user.
+                    q = await query(collectionRef, 
+                        where("uid", "==", uid),
+                        orderBy("createdAt", "desc"));
+                    console.log(`Pesquisando posts criados pelo usuário de id ${uid}`)
+                    //
+                }
+                else{
                     q = await query(collectionRef, orderBy("createdAt", "desc"));    
                 }
                 
@@ -39,6 +52,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) =>{
                         }))
                     )
                 })
+                console.log(onSnapshot())
                 setLoading(false)
             } catch (error) {
                 console.log(error)

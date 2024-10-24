@@ -28,6 +28,12 @@
     display: flex;    
 }
 
+.tags a {
+    color: rgb(14, 235, 187);
+    display: flex;
+    text-decoration: none;
+}
+
 .tags span{
     margin-left: 14px;
 }

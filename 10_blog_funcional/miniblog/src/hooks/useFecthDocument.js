@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {db} from "../firebase/config";
-import { collection, where, QuerySnapshot, doc, getDoc, onSnapshot} from "firebase/firestore";
+import { collection, where, QuerySnapshot, doc, getDoc, onSnapshot, setDoc} from "firebase/firestore";
 
 export const useFetchDocument = (docCollection, uid) => {
     const [document, setDocument] = useState(null);
@@ -13,7 +13,7 @@ export const useFetchDocument = (docCollection, uid) => {
     useEffect(() => {
         // A função será assíncrona enquanto busca os dados no banco!
 
-        async function loadData(){
+        async function loadDocument(){
             if(cancelled) return;
 
             setLoading(true)
@@ -21,17 +21,25 @@ export const useFetchDocument = (docCollection, uid) => {
             const collectionRef = await collection(db, docCollection)
 
             try {
-                let q = await getDoc(doc(db, "posts", uid))
-                if(q){
-                    setDocument(q);
-                    setLoading(false)
-                }
+                // let q = await getDoc(doc(collectionRef, "posts", uid))
+                // if(q){
+                //     setDocument(q);
+                //     setLoading(false)
+                // }
+
+                const docRef = await doc(db, docCollection, uid)
+                const docSnap = await getDoc(docRef)
+
+                await setDocument(docSnap.data())
+
+                //console.log(`Resultado do setDocument ${document}`)
+                setLoading(false)
             } catch (error) {
                 setError(error.message);
                 setLoading(false);                
             }
         }
-
+        loadDocument()
     }, [docCollection, uid, cancelled])
 
     useEffect(() => {
