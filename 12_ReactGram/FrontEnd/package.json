@@ -1,0 +1,14 @@
+{
+  "name": "frontendreactgram",
+  "version": "1.0.0",
+  "description": "FrontEnd do ReactGram.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "douglas i p serafim",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.3.1"
+  }
+}
