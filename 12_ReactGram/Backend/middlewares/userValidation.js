@@ -32,10 +32,12 @@ const userCreateValidation = () => {
 
 const userLoginValidation = () => {
   return [
-    // body("username")
-    //   .isString()
-    //   .withMessage("O usuário precisa ser informado."),
+    body("username")
+      .optional()
+      .isString()
+      .withMessage("O usuário precisa ser informado."),
     body("email")
+      .optional()
       .isString()
       .withMessage("O email é obrigatório")
       .isEmail()
@@ -45,10 +47,44 @@ const userLoginValidation = () => {
       .withMessage("A senha é obrigatória")
       .isLength({ min: 6 })
       .withMessage("A senha deve ter pelo menos 6 caracteres"),
+    body()
+      .custom((value) => {
+        if(!value.email && !value.username){
+          throw new Error("É necessário informar o email ou o username, para realizar a tentativa de login.");          
+        }
+        return true;
+      })
+      .withMessage(`É necessário informar o email, username.`)
   ]
+}
+
+const userUpdateValidation = () => {
+  body("username")
+    .optional()
+    .isLength({ min: 3 })
+    .withMessage("O nome deve ter pelo menos 3 caracteres"),
+  body("email")
+    .optional()
+    .isEmail()
+    .withMessage("Insira um email valido"),
+  body("password")
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage("A senha precisa ter no mínimo 6 caracteres.")
+  body("confirmPassword")
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage("A confirmação de senha precisa ter no mínimo 6 caracteres.")
+  .custom((value, {req}) => {
+    if(value.password !== value.confirmPassword){
+      throw new Error("As senhas não conferem.");
+    }
+  })
+
 }
 
 module.exports = {
   userCreateValidation,
-  userLoginValidation
+  userLoginValidation,
+  userUpdateValidation
 };

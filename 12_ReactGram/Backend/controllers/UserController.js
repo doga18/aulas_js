@@ -46,23 +46,50 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const {email, password} = req.body;
-  const checkEmail = await User.findOne({email});
-  if(!checkEmail){
-    return res.status(400).json({erros: ["Usuário nao encontrado, tente novamente mais tarde."]});
+  const UserExists = await User.findOne({email});
+  if(!UserExists){
+    return res.status(404).json({erros: ["Usuário nao encontrado, tente novamente mais tarde."]});
   }
-  const checkPassword = await bcryptjs.compare(password, checkEmail.password);
+  const checkPassword = await bcryptjs.compare(password, UserExists.password);
   if(!checkPassword){
-    return res.status(400).json({erros: ["Senha invalida, tente novamente mais tarde."]});
+    return res.status(400).json({erros: ["Senha invalida, tente novamente ou recupere sua conta."]});
   }
-  res.status(200).json({
-    _id: checkEmail._id,
-    token: generateToken(checkEmail._id)
+  res.status(201).json({
+    _id: UserExists._id,
+    profileImage: UserExists.profileImage,
+    token: generateToken(UserExists._id)
   })
 };
 
+
+// Get the logged in user.
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await req.user;
+    res.status(200).json({user})
+  } catch (error) {
+    res.status(403).json({errors: ['Não foi possível pegar o usuário da requisição.']})
+  }
+}
+
+
+const teste = async (req, res) => {
+  return res.status(200).send({status: "OK"});
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const findUser = await User.findOne({username});
+    res.status(200).json({findUser});  
+  } catch (error) {
+    res.status(403).json({errors: ['Não foi possível pegar o usuário da requisição.']});
+  }
+  
+};
 
 
 
 // Exportando o controller para uso posterior.
 
-module.exports = { register, login }
+module.exports = { register, login, teste, getCurrentUser, updateUser }
