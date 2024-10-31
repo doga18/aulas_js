@@ -20,6 +20,7 @@
   list-style: none;
   text-decoration: none;
   color: aliceblue;
+  background-color: #ec0a0a;
   margin: 0 2em 2em 0;
   margin-left: 2em;
   padding: .3em 1em;
@@ -30,8 +31,7 @@
 
 .links a:hover {
   color: rgb(0, 0, 0);
-  border: .5px solid rgb(12, 3, 58);
-  
+  border: .5px solid rgb(12, 3, 58);  
   background-color: rgb(116, 177, 2);
 }
   

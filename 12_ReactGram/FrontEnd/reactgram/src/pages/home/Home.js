@@ -9,6 +9,7 @@ const Home = () => {
     <div className="home">
       <h1 className={styles.title}>
         Bem vindo ao ReactGram, Inspirado no Instagram.
+        <p>Api Key: <Link to={process.env.REACT_APP_URL_BACKEND} target="_blank">{process.env.REACT_APP_URL_BACKEND}</Link></p>
       </h1>
       <span className={styles.subtitle}>Para Acessar, Faça seu <Link to="/login">Login</Link> ou <Link to="/register">Crie sua conta.</Link></span>
     </div>

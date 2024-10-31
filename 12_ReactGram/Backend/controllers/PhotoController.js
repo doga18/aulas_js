@@ -1,14 +1,25 @@
 // Importando o model Photo para criar seu controller.
 const Photo = require("../models/Photo");
-
-
-// Funções de Rest
+// Mongoose
+const mongoose = require("mongoose");
 
 const createPhoto = async (req, res) => {
-  const {userId, userName, title, image} = req.body;
-
+  const { title } = req.body;  
+  console.log(title, req.file);
+  const userId = req.user._id;
+  const userName = req.user.username;
+  console.log(userId, userName, title);
   
+  const newPhoto = await Photo.create({
+    title: title,
+    image: req.file.path,
+    userId: userId,
+    userName: userName,
+    likes: [],
+    comments: [],
+  })
 
+  res.status(201).json({"success": newPhoto});
 };
 
 const getPhoto = async (req, res) => {};

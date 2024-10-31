@@ -9,17 +9,22 @@ const PhotoSchema = new mongoose.Schema({
   },
   likes: {
     type: Array,
-    required: true
+    required: false
+  },
+  description:{
+    type: String,
+    required: false,
+    default: ""
   },
   comments: {
     type: Array,
-    required: true
+    required: false
   },
-  userId: mongoose.types.ObjectId,
+  userId: mongoose.Types.ObjectId,
   userName: {
     type: String,
     required: false
-  }
+  },
   title: {
     type: String,
     required: true,

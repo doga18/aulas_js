@@ -19,7 +19,7 @@ const authGuard = async (req, res, next) => {
     // Pegando o usuário que já está na requisição.
     // Lembrando de omitir a senha do usuário.
     req.user = await User.findById(verified.id).select("-password");
-    console.log(req.user);
+    //console.log(req.user);
     next();    
   } catch (error) {
     res.status(401).json({errors: ["Token invalido."]});

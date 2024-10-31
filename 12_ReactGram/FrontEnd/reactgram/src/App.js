@@ -5,12 +5,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 // Imports components
-
 import Navbar from './components/Navbar.js';
 import Footer from './components/Footer.js';
 
 // Imports Pages of Project
-
 import Home from './pages/home/Home.js';
 import Login from './pages/login/Login';
 import About from './pages/about/About';
@@ -24,7 +22,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
           <div className="container">
-            <Routes>
+            <Routes>              
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/about" element={<About />} />

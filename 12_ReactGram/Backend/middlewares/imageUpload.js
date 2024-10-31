@@ -8,15 +8,15 @@ const imageStorage = multer.diskStorage({
   destination: function(req, file, cb){
     let folder = ""
 
-    if(req.baseUrl.includes("users")){
+    if(req.baseUrl.includes("user")){
       folder = "users";      
-    } else if (req.baseUrl.includes("photos")) {
+    } else if (req.baseUrl.includes("photo")) {
       folder = "photos";      
     } else {
-      folder = "default" + math.random()
+      folder = "default"
     }
     // Callback para informações.
-    cb(null, `upload/${folder}/`)    
+    cb(null, `uploads/${folder}/`)    
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname))
@@ -31,7 +31,7 @@ const imageUpload = multer({
     fileSize: 1024 * 1024 * 5 // 5MB
   },
   fileFilter: (req, file, cb) => {
-    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"){
+    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg"){
       cb(null, true);
     } else {
       cb(null, false);
