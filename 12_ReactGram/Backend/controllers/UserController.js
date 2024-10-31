@@ -80,8 +80,9 @@ const teste = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { username } = req.body;
+    console.log(username);
     const findUser = await User.findOne({username});
-    res.status(200).json({findUser});  
+    res.status(200).json({"sucess": findUser});
   } catch (error) {
     res.status(403).json({errors: ['Não foi possível pegar o usuário da requisição.']});
   }

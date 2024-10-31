@@ -59,28 +59,31 @@ const userLoginValidation = () => {
 }
 
 const userUpdateValidation = () => {
-  body("username")
-    .optional()
-    .isLength({ min: 3 })
-    .withMessage("O nome deve ter pelo menos 3 caracteres"),
-  body("email")
-    .optional()
-    .isEmail()
-    .withMessage("Insira um email valido"),
-  body("password")
-    .optional()
-    .isLength({ min: 6 })
-    .withMessage("A senha precisa ter no mínimo 6 caracteres.")
-  body("confirmPassword")
-    .optional()
-    .isLength({ min: 6 })
-    .withMessage("A confirmação de senha precisa ter no mínimo 6 caracteres.")
-  .custom((value, {req}) => {
-    if(value.password !== value.confirmPassword){
-      throw new Error("As senhas não conferem.");
-    }
-  })
-
+  return [
+    body("username")
+      .optional()
+      .isLength({ min: 3 })
+      .withMessage("O nome deve ter pelo menos 3 caracteres"),
+    body("email")
+      .optional()
+      .isEmail()
+      .withMessage("Insira um email valido"),
+    body("password")
+      .optional()
+      .isLength({ min: 6 })
+      .withMessage("A senha precisa ter no mínimo 6 caracteres."),
+    body("confirmPassword")
+      .optional()
+      .isLength({ min: 6 })
+      .withMessage("A confirmação de senha precisa ter no mínimo 6 caracteres."),
+    body()
+      .custom((value, {req}) => {
+        if(value.password !== value.confirmPassword){
+          throw new Error("As senhas não conferem.");
+        }
+      return true;
+    })
+  ]
 }
 
 module.exports = {

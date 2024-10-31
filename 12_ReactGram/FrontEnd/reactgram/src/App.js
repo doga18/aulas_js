@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+// Imports hooks from the react route dom.
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Imports styles from css.js
 import './App.css';
+
+// Imports components
+
+import Navbar from './components/Navbar.js';
+import Footer from './components/Footer.js';
+
+// Imports Pages of Project
+
+import Home from './pages/home/Home.js';
+import Login from './pages/login/Login';
+import About from './pages/about/About';
+
+// Initialized components
+//const navigate = Navigate;
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Aqui começa a part de <code>Front End</code> do ReactGram!</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Seja bem vindo ao <code>Front end</code> do projeto <code>FullStack</code> do ReactGra, cópia do <code>Instragram.</code>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Descubra mais sobre o React.
-        </a>
-      </header>
+      <BrowserRouter>
+        <Navbar />
+          <div className="container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </div>          
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }

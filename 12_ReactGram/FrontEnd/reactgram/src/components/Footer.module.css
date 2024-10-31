@@ -1,0 +1,44 @@
+.footer {
+  color: aliceblue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 15em;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: aliceblue;
+  list-style: none;
+}
+
+.links .links_ul {
+  list-style: none;  
+}
+
+.links {
+  font-size: 19px;
+  padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: flex-start;
+  font-family: "Playwrite GB S", cursive;
+  text-decoration: none;
+}
+
+.footer {
+  color: aliceblue;  
+}
+
+.contats {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: "Playwriting GB S", cursive;
+}
+
+
