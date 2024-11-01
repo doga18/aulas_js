@@ -13,3 +13,17 @@
 .subtitle a:hover {
   color: greenyellow;
 }
+
+.title p a {
+  text-decoration: none;
+  color: rgb(166, 255, 0);
+  transition: 0.75s;
+  border-radius: 9px;
+}
+
+.title p a:hover {
+  color: aliceblue;
+  background-color: rgb(8, 1, 24);
+  border: 1px solid #fd0000;
+  border-radius: 9px;
+}

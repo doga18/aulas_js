@@ -22,7 +22,19 @@ const createPhoto = async (req, res) => {
   res.status(201).json({"success": newPhoto});
 };
 
-const getPhoto = async (req, res) => {};
+const getPhoto = async (req, res) => {
+  const { id } = req.params;
+
+    const tryGetPhoto = await Photo.findById(id).select('-userId');
+
+    try {
+      res.status(200).json({"success": tryGetPhoto});
+    } catch (error) {
+      res.status(500).json({"error": error});
+    }
+  };
+
+
 
 const editPhoto = async (req, res) => {};
 
