@@ -9,6 +9,11 @@ const db = require("../config/db.js");
 router.use("/api/user", require("./UserRoutes"));
 // Importando as rotas das Photos
 router.use("/api/photos", require("./PhotoRoutes"));
+// Importando as rotas de superuser
+router.use("/api/superuser", require("./SuperUserRoutes"));
+
+// Importando a Key de desenvolvimento!
+const KEY_DEVELOPMENT = process.env.KEY_DEVELOPMENT;
 
 // Criando a rota /.
 router.get("/", (req, res) => {
