@@ -2,8 +2,7 @@ const express = require("express");
 const router = express();
 // Importando o DB para consultar os dados.
 const db = require("../config/db.js");
-// Importando o controoler do User para uso na rota.
-// const userController = require("../controllers/UserController");
+
 
 // Importando as rotas do usuário.
 router.use("/api/user", require("./UserRoutes"));
@@ -11,6 +10,7 @@ router.use("/api/user", require("./UserRoutes"));
 router.use("/api/photos", require("./PhotoRoutes"));
 // Importando as rotas de superuser
 router.use("/api/superuser", require("./SuperUserRoutes"));
+
 
 // Importando a Key de desenvolvimento!
 const KEY_DEVELOPMENT = process.env.KEY_DEVELOPMENT;

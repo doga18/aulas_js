@@ -1,13 +1,15 @@
 import React from 'react'
-import styles from './Login.module.css'
+import styles from './Register.module.css'
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const Register = () => {
   // Criando as variáveis.
-  const [email, setEmail] = useState('');  
-  const [password, setPassword] = useState('');  
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
   const [errors, setErrors] = useState([]);
   const [msg, setMsg] = useState([]);
 
@@ -19,48 +21,51 @@ const Login = () => {
     setErrors([]);
     setMsg([]);
 
-    if(!email || !password ) {
+    if(!username || !email  || !password || !confirmPassword) {
       setErrors(['Todos os campos devem ser preenchidos corretamente.']);
       return
     }
 
-    if(email && email.length < 3 ) {
-      console.log('user name tem menos de 5 letras ', email.length)      
+    if(username && username.length < 3 ) {
+      console.log('user name tem menos de 5 letras ', username.length)      
       setErrors(["Seu nome precisa ter no mínimo 3 letras."])
       console.log(errors)
       return
     }
 
-    if(email.length <= 3 ) {
-      setErrors(["Seu usuário ou email precisa ter no mínimo 3 caracteres."])
+    if(email.length <= 8 ) {
+      setErrors(["Seu email precisa ter no mínimo 8 letras."])
       return
     }    
 
     const newUser = {
+      username,
       email,
-      password
+      password,
+      confirmPassword
     }
 
     setMsg(['Segure firme, estamos autenticando seu login...']);
 
-    console.log("tentando enviar esse body");
-    console.log(newUser);
-
     try {
-      const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/login', newUser)
+      const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/register', newUser)
 
       console.log(response.status);
 
-      if(response.status !== 200) {
+      if(response.status !== 201) {
         setErrors(response.data.errors);
         setMsg([]);
         return
       }
 
-      if(response.status === 200){
-        try {          
+      if(response.status === 201){
+        try {
+          console.log("criando os cookies")
           localStorage.setItem('user_id', response.data._id)
           localStorage.setItem('token', response.data.token)
+          setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
+          console.log('User criado!')
+          console.log(response.data.token)
           setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
           setTimeout(() => {
             navigate('/home')
@@ -80,20 +85,35 @@ const Login = () => {
         setMsg([]);      
         return
       }
-      setErrors(["Fatal error, please try again later."])
+      setErrors(["Erro ao tentar criar a conta, tente novamente mais tarde."])
     }
   }
+
+  useEffect(() => {
+    if(confirmPassword.length > 6 && (password !== confirmPassword)) {
+      setErrors(['As senhas não conferem, favor corrigir antes de continuar.']);
+    }
+    if(password === confirmPassword) {
+      setErrors([]);
+    }    
+  }, [confirmPassword])
 
   return (
     <div className={styles.login}>
       <h1>Efetue seu login</h1>
       <div className={styles.form}>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Entre com seu usuário/email</label>
-          <input type="text" id="email" placeholder="usuário ou email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+          <label htmlFor="username">Insira seu nome de usuário</label>
+          <input type="text" id="username" placeholder="Nome de usuário" onChange={(e) => setUsername(e.target.value)} value={username}/>
+
+          <label htmlFor="email">Insira seu email</label>
+          <input type="email" id="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
 
           <label htmlFor="password">Insira sua senha</label>
           <input type="password" id="password" placeholder="Senha" onChange={(e) => setPassword(e.target.value)} value={password}/>
+
+          <label htmlFor="confirmPassword">Confirme sua senha</label>
+          <input type="password" id="confirmPassword" placeholder="Confirme a senha" onChange={(e) => setconfirmPassword(e.target.value)} value={confirmPassword}/>
 
           <div className={styles.msgs}>
             {errors && errors.length > 0 && 
@@ -123,4 +143,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register

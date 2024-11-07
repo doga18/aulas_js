@@ -11,10 +11,20 @@ require("dotenv").config();
 // Pegando a porta do projeto, oriunda do dotenv.
 const PORT_PROJECT = process.env.PORT_PROJECT;
 
+// Import middle to handle to validation if json format.
+const verifyJson = require('./middlewares/verifyJsonFormat.js');
+
 // Importando o body-parser para pegar os dados da requisição.
 const bodyParser = require("body-parser");
-app.use(bodyParser.json());
+
+// End of importations!
+// Initialized app use options!
+//app.use(bodyParser.json());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add middle to handle validation of json format, before dedicated routes.
+app.use(verifyJson);
 
 // Importando o DB para consultar os dados.
 const db = require("./config/db");

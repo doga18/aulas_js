@@ -65,7 +65,7 @@ const register = async (req, res) => {
   }else{
     // Processo de criar o usuário.
     try {
-      const password_hash = hashPassword(password);
+      const password_hash = await hashPassword(password);
       console.log(`Senha Hasheada, ${password_hash}, username e email: ${username}, ${email}`)
       const newUser = await User.create({username, email, password: password_hash});
       // Criando o Token do usuário criado para logar no sistema.
@@ -84,18 +84,25 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const {email, password} = req.body;
+  let userTry;
   const UserExists = await User.findOne({email});
-  if(!UserExists){
+  const UserExistsUsername = await User.findOne({username: email})
+  if(!UserExists && !UserExistsUsername){
     return res.status(404).json({erros: ["Usuário nao encontrado, tente novamente mais tarde."]});
+  }else if(UserExists){
+    userTry = UserExists;
+  }else if(UserExistsUsername){
+    userTry = UserExistsUsername;
   }
-  const checkPassword = await bcryptjs.compare(password, UserExists.password);
+
+  const checkPassword = await bcryptjs.compare(password, userTry.password);
   if(!checkPassword){
     return res.status(400).json({erros: ["Senha invalida, tente novamente ou recupere sua conta."]});
   }
-  res.status(201).json({
-    _id: UserExists._id,
-    profileImage: UserExists.profileImage,
-    token: generateToken(UserExists._id)
+  res.status(200).json({
+    _id: userTry._id,
+    profileImage: userTry.profileImage,
+    token: generateToken(userTry._id)
   })
 };
 

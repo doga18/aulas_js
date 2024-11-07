@@ -12,7 +12,7 @@ const userCreateValidation = () => {
       .withMessage("O email é obrigatório")
       .isEmail()
       .withMessage("Insira um email valido"),
-    body("password")
+    body("password")      
       .isString()
       .withMessage("A senha é obrigatória")
       .isLength({ min: 6 })
@@ -39,9 +39,10 @@ const userLoginValidation = () => {
     body("email")
       .optional()
       .isString()
-      .withMessage("O email é obrigatório")
-      .isEmail()
-      .withMessage("Insira um email valido"),
+      .withMessage("O email é obrigatório"),
+      // Não precisa essa validação uma vez que o usuário pode informar o username ou o email.
+      // .isEmail()
+      // .withMessage("Insira um email valido"),
     body("password")
       .isString()
       .withMessage("A senha é obrigatória")

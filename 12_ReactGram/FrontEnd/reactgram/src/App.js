@@ -11,6 +11,7 @@ import Footer from './components/Footer.js';
 // Imports Pages of Project
 import Home from './pages/home/Home.js';
 import Login from './pages/login/Login';
+import Register from './pages/register/Register';
 import About from './pages/about/About';
 
 // Initialized components
@@ -25,6 +26,7 @@ function App() {
             <Routes>              
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </div>          

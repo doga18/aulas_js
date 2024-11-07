@@ -1,5 +1,7 @@
 // Importando o model Photo para criar seu controller.
 const Photo = require("../models/Photo");
+// Imports model user to collect data.
+const User = require("../models/User");
 // Mongoose
 const mongoose = require("mongoose");
 // Para manipulação de arquivos.
@@ -35,52 +37,48 @@ const createPhoto = async (req, res) => {
 
   res.status(201).json({"success": newPhoto});
 };
-
 const editPhoto = async (req, res) => {
-  const { id } = req.params;
-  const { title, description} = req.body;
-  console.log(req.body);
-  const reqUser = req.user;
-  const photo = await Photo.findById(id);
-
-  console.log(reqUser._id);
-  console.log(photo.userId);
-
-  // Check if the photo exists.
-  if(!photo){
-    return res.status(422).json({ errors: ['That photo is not exists!']});
-  }
-
-  // Check if the photo belongs to the user who is trying to edit it.
-  if(!photo.userId.equals(reqUser._id)){
-    return res.status(422).json({ errors: ['You are not authorized to edit this photo!']});
-  }
-
-  if(title === photo.title && description === photo.description){
-    return res.status(200).json({ errors: ['You trying edit this photo, but that information is exactly equal.']})
-  }
-
-  if(title){
-    photo.title = title;
-  }
-
-  if(description){
-    photo.description = description;
-  }
 
   try {
-    let ko = await photo.save();
-    console.log(`Valor atual ${photo.description} novo valor enviado ${description}`);
-    console.log(ko);
+    const { id } = req.params;
+    const { title, description} = req.body;  
+    const reqUser = req.user;
+    const photo = await Photo.findById(id);
+
+    console.log(reqUser._id);
+    console.log(photo.userId);
+
+    // Check if the photo exists.
+    if(!photo){
+      return res.status(422).json({ errors: ['That photo is not exists!']});
+    }
+
+    // Check if the photo belongs to the user who is trying to edit it.
+    if(!photo.userId.equals(reqUser._id)){
+      return res.status(422).json({ errors: ['Are you not authorized to edit this photo!']});
+    }
+
+    if(title === photo.title && description === photo.description){
+      return res.status(200).json({ errors: ['You trying edit this photo, but that information is exactly equal, try with another informations!']});
+    }
+
+    if(title){
+      photo.title = title;
+    }
+
+    if(description){
+      photo.description = description;
+    }
+    await photo.save();
     return res.status(200).json({ 'success': 'Photo saved successfully!'});
+
+
 
   } catch (error) {
     return res.status(500).json({ errors: 'An error occurred while trying to edit the photo!'});
   }
 
 };
-
-
 const getPhoto = async (req, res) => {
   const { id } = req.params;
 
@@ -95,15 +93,10 @@ const getPhoto = async (req, res) => {
       return res.status(500).json({"error": error});
     }
   };
-
 const getPhotos = async (req, res) => {
   // Route to get photos to send in the home page.
 
-  try {
-    //const lastPhotos = await Photo.find().sort({ createdAt: -1 }).limit(20);
-    // const k = await Photo.find({});
-    // k.map((photo) => console.log(`item: ${photo}`));
-    // Query de consulta.
+  try {    
     const lastPhotos = await Photo.find({}).sort([['createdAt', -1]]).exec();
     return res.status(200).json({ success: true, data: lastPhotos});
   } catch (error) {
@@ -111,7 +104,6 @@ const getPhotos = async (req, res) => {
   }
   return res.status(200).json({"success": 'sem pesquisa.'});
 };
-
 // Get all photos from that user id.
 const getUserPhotos = async (req, res) => {
   const { id } = req.params;  
@@ -130,7 +122,15 @@ const getUserPhotos = async (req, res) => {
   }
 
 };
+// Search for photos by title
+const searchPhoto = async(req, res) => {
+  const {q} = req.query;
 
+  const result = await Photo.find({}).where({ title: new RegExp(q, 'i') }).exec();
+
+  console.log(q);
+  return res.status(200).json({success: result});
+}
 const deletePhoto = async (req, res) => {
   // function to delete a photo thas the user is owns.
   const { id } = req.params;
@@ -177,5 +177,131 @@ const deletePhoto = async (req, res) => {
     return;
   }
 };
+// Routes to actions on photo!
+// Route to register a like on the photo.
+const giveLikePhoto = async (req, res) => {
+  const { id } = req.params;
 
-module.exports = { createPhoto, getPhoto, editPhoto, deletePhoto, getPhotos, getUserPhotos }
+  const reqUser = req.user;
+
+  const sPhoto = await Photo.findById(id);
+
+  if(!sPhoto){
+    return res.stauts(400).json*{ errors: ["Fail to give like in photo with not exists!"]}
+  }
+
+  try {
+    // Verify if the user already likes this photo.
+    if(sPhoto.likes.includes(reqUser._id)){
+      return res.status(401).json({ errors: ['User already likes this photo!']})
+    }
+    
+    const tryLike = await sPhoto.likes.push(reqUser._id);    
+    await sPhoto.save();
+    return res.status(200).json({"success": `Liked from ID:${reqUser._id} Name:${reqUser.username}!`})
+  } catch (error) {
+    console.log(error);
+    return res.status(422).json({ errors: ["Error while try to like in that photo."]})
+  }
+}
+// Get all likes from that photo.
+const getLikesPhoto = async (req, res) => {
+  const { id } = req.params;
+
+  const likesPhoto = await Photo.findById(id);
+
+  if(!likesPhoto){
+    return res.status(200).json({ errors: ["Error to get likes from that photo!"]})
+  }
+
+  try {
+    const listIdLikes = likesPhoto.likes;
+    // Consult info about id of users who have liked this photo.
+
+    if(!listIdLikes){
+      return res.status(404).json({ errors: ["None likes are found in this photo!"]})
+    }
+
+    let listAAA = [];
+
+    const usersLiked = await Promise.all(
+      listIdLikes.map(async (user) => {
+        const find = await User.findById(user).select('-password');
+        listAAA.push(find);
+      })
+    )
+
+    return res.status(200).json(listAAA)
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ errors: [" Error to get likes from that photo!"]})
+  }  
+}
+// Insert a comment in the photo.
+const createCommentPhoto = async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+  const reqUser = req.user;
+
+  try {
+    const cPhoto = await Photo.findById(id);
+    const userComment = {
+      userId: reqUser._id,
+      username: reqUser.username,
+      userImage: reqUser.profileImage,
+      comment: comment
+    }
+
+    if(!cPhoto){
+      return res.status(404).json({ errors: ["Your comment have to go in the photo with exists."]})
+    }
+
+    const newComment = cPhoto.comments.push(userComment);
+    await cPhoto.save();
+
+    return res.status(201).json({"success": `Comment created ${userComment}`})
+
+  } catch (error) {
+    return res.status(404).json({ errors: ["Internal error, try again later."]})
+  }
+}
+// Get all comments of that photo.
+const getCommentsPhoto = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const commentsPhoto = await Photo.findById(id);
+
+    if(!commentsPhoto){
+      return res.status(404).json({ errors: ["That's photo dont have any comments"]})
+    }
+    let comments = [];
+
+    const commentsUsers = await Promise.all(
+      commentsPhoto.comments.map(async(comment) => {
+        const findUser = await User.findById(comment.id).select('-password');
+        comments.push({...comment, user: findUser });
+      })      
+    )
+
+    return res.status(200).json(comments);
+
+  } catch (error) {    
+    return res.status(404).json({ errors: [`Internal error, try again later.`]})
+  }
+
+}
+
+module.exports = { 
+  createPhoto,
+  getPhoto,
+  editPhoto,
+  deletePhoto,
+  getPhotos,
+  getUserPhotos,
+  giveLikePhoto,
+  getLikesPhoto,
+  createCommentPhoto,
+  getCommentsPhoto,
+  searchPhoto
+}
