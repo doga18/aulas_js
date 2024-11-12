@@ -10,8 +10,8 @@ import Footer from './components/Footer.js';
 
 // Imports Pages of Project
 import Home from './pages/home/Home.js';
-import Login from './pages/login/Login';
-import Register from './pages/register/Register';
+import Login from './pages/auth/Login.js';
+import Register from './pages/auth/Register.js';
 import About from './pages/about/About';
 
 // Initialized components

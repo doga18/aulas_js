@@ -2,7 +2,11 @@ import React from 'react'
 import styles from './Register.module.css'
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// How we have to use Slices, we dont't have to use anymore axios.
+//import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+// Import Redux
+import { register, reset} from '../../slices/authSlice';
 
 const Register = () => {
   // Criando as variáveis.
@@ -14,6 +18,10 @@ const Register = () => {
   const [msg, setMsg] = useState([]);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { loading, error} = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,45 +56,52 @@ const Register = () => {
     setMsg(['Segure firme, estamos autenticando seu login...']);
 
     try {
-      const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/register', newUser)
-
-      console.log(response.status);
-
-      if(response.status !== 201) {
-        setErrors(response.data.errors);
-        setMsg([]);
-        return
-      }
-
-      if(response.status === 201){
-        try {
-          console.log("criando os cookies")
-          localStorage.setItem('user_id', response.data._id)
-          localStorage.setItem('token', response.data.token)
-          setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-          console.log('User criado!')
-          console.log(response.data.token)
-          setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-          setTimeout(() => {
-            navigate('/home')
-          }, 3000);
-        } catch (error) {
-          setErrors(["Fail to register that user token in local session!"]);
-          return
-        }
-      }
-
+      dispatch(register(newUser));
+      console.log("Criado novo usuário!")
     } catch (error) {
-      // handle with diferent error's.
-      console.log(error.response);
-      console.log(error.response.data.erros[0]);
-      if(error.response && error.response.status === 400){        
-        setErrors([error.response.data.erros[0]]);  
-        setMsg([]);      
-        return
-      }
-      setErrors(["Erro ao tentar criar a conta, tente novamente mais tarde."])
+      console.log(error.message);
     }
+
+  //   try {
+  //     const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/register', newUser)
+
+  //     console.log(response.status);
+
+  //     if(response.status !== 201) {
+  //       setErrors(response.data.errors);
+  //       setMsg([]);
+  //       return
+  //     }
+
+  //     if(response.status === 201){
+  //       try {
+  //         console.log("criando os cookies")
+  //         localStorage.setItem('user_id', response.data._id)
+  //         localStorage.setItem('token', response.data.token)
+  //         setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
+  //         console.log('User criado!')
+  //         console.log(response.data.token)
+  //         setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
+  //         setTimeout(() => {
+  //           navigate('/home')
+  //         }, 3000);
+  //       } catch (error) {
+  //         setErrors(["Fail to register that user token in local session!"]);
+  //         return
+  //       }
+  //     }
+
+  //   } catch (error) {
+  //     // handle with diferent error's.
+  //     console.log(error.response);
+  //     console.log(error.response.data.erros[0]);
+  //     if(error.response && error.response.status === 400){        
+  //       setErrors([error.response.data.erros[0]]);  
+  //       setMsg([]);      
+  //       return
+  //     }
+  //     setErrors(["Erro ao tentar criar a conta, tente novamente mais tarde."])
+  //   }
   }
 
   useEffect(() => {
@@ -96,11 +111,16 @@ const Register = () => {
     if(password === confirmPassword) {
       setErrors([]);
     }    
-  }, [confirmPassword])
+  }, [confirmPassword]);
+
+  // Clean all dispatchs
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch])
 
   return (
     <div className={styles.login}>
-      <h1>Efetue seu login</h1>
+      <h1>Crie sua conta!</h1>
       <div className={styles.form}>
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Insira seu nome de usuário</label>

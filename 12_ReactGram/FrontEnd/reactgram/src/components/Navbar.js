@@ -12,6 +12,7 @@ import {BsSearch, BsHouseDoorFill, BsFillPersonFill, BsFillCameraFill, BsFillBoo
 import { FcAbout } from "react-icons/fc";
 import { CiLogin } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
+import { RiAddCircleFill } from "react-icons/ri";
 
 const Navbar = () => {
 
@@ -38,7 +39,7 @@ const Navbar = () => {
           <CiLogin />
         </NavLink>
         <NavLink to="/register">
-          <BsFillCameraFill />
+          <RiAddCircleFill />
         </NavLink>
         <NavLink to="/about">
           <FcAbout />

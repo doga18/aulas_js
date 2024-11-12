@@ -21,4 +21,17 @@
 #nav-links {
   display: flex;
   align-items: center;
+  color: aliceblue;
+}
+
+#nav-links a {
+  margin-left: 1em;
+}
+
+#nav-links span {
+  cursor: pointer;
+}
+
+#nav-links svg {
+  font-size: 1.7em;
 }

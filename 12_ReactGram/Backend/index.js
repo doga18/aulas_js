@@ -32,10 +32,9 @@ const db = require("./config/db");
 // Importando as rotas.
 const router = require("./routes/Router");
 // Resolvendo o problema do CORS, setando frontend confiável.
-app.use(cors({ credentias: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000", methods: ["GET", "POST", "PUT", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"] }));
 // Diretório de uplod dos arquivos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.json());
 app.use(router);
 
 // Turn on the server on port 3001
