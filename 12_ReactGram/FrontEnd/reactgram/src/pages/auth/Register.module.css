@@ -86,6 +86,19 @@ form input::placeholder {
   box-shadow: 2px 2px 2px 1px rgba(35, 194, 30, 0.486);
 }
 
+.wait {
+  text-decoration: none;
+  color: aliceblue;
+  background-color: #000000;
+  border: 1px solid #3d3b3b5b;
+  border-radius: 9px;
+  padding: 17px 15px;
+  margin: 10px 12px;
+  box-shadow: 2px 2px 2px 1px rgba(204, 180, 100, 0.281);
+  transition: .75s;
+  cursor: not-allowed;
+}
+
 .disabled {
   text-decoration: none;
   color: aliceblue;  

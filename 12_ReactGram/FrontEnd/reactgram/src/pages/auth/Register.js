@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 // Import Redux
 import { register, reset} from '../../slices/authSlice';
+// Import component message to used in pararell with redux, loading, error, etc...
+import Message from '../../components/Message';
 
 const Register = () => {
   // Criando as variáveis.
@@ -56,8 +58,7 @@ const Register = () => {
     setMsg(['Segure firme, estamos autenticando seu login...']);
 
     try {
-      dispatch(register(newUser));
-      console.log("Criado novo usuário!")
+      dispatch(register(newUser));      
     } catch (error) {
       console.log(error.message);
     }
@@ -135,7 +136,7 @@ const Register = () => {
           <label htmlFor="confirmPassword">Confirme sua senha</label>
           <input type="password" id="confirmPassword" placeholder="Confirme a senha" onChange={(e) => setconfirmPassword(e.target.value)} value={confirmPassword}/>
 
-          <div className={styles.msgs}>
+          {/* <div className={styles.msgs}>
             {errors && errors.length > 0 && 
               <ul className={styles.errors}>
                 {errors.map((error, index) => (
@@ -150,11 +151,14 @@ const Register = () => {
                 ))}
               </ul>
             }
-          </div>
+          </div> */}
 
+          {error && <Message msg={error} type="error" />}
           <div className={styles.buttons}>
             {/* <input className={isDisabled ? (styles.disabled) : styles.submit} id="submit" type="submit" value="Entrar" disabled={isDisabled} /> */}
-            <input className={styles.submit} id="submit" type="submit" value="Entrar" />
+            {!loading && <input className={styles.submit} id="submit" type="submit" value="Entrar" />}
+            {loading && <input className={styles.wait} value="Aguarde..." />}            
+            {/* {error && <Message msg={error} type="error" />} */}
             <Link to="/" className={styles.cancel}>Voltar</Link>
           </div>
         </form>

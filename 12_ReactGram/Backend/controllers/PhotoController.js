@@ -75,7 +75,7 @@ const editPhoto = async (req, res) => {
 
 
   } catch (error) {
-    return res.status(500).json({ errors: 'An error occurred while trying to edit the photo!'});
+    return res.status(500).json({ errors: ['An error occurred while trying to edit the photo!']});
   }
 
 };
@@ -90,7 +90,7 @@ const getPhoto = async (req, res) => {
       }
       return res.status(200).json({"success": tryGetPhoto});
     } catch (error) {
-      return res.status(500).json({"error": error});
+      return res.status(500).json({ errors: [error]});
     }
   };
 const getPhotos = async (req, res) => {
@@ -100,7 +100,7 @@ const getPhotos = async (req, res) => {
     const lastPhotos = await Photo.find({}).sort([['createdAt', -1]]).exec();
     return res.status(200).json({ success: true, data: lastPhotos});
   } catch (error) {
-    return res.status(500).json({"error": error});
+    return res.status(500).json({errors: [error]});
   }
   return res.status(200).json({"success": 'sem pesquisa.'});
 };
@@ -118,7 +118,7 @@ const getUserPhotos = async (req, res) => {
     }
     return res.status(200).json(tryGetPhotos);
   } catch (error) {
-    return res.status(500).json({"error": error});
+    return res.status(500).json({errors: [error]});
   }
 
 };

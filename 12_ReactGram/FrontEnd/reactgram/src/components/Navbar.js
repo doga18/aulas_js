@@ -3,8 +3,13 @@ import style from './Navbar.module.css'
 // importando o css only
 import './Navbar.css'
 
-import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, reset } from '../slices/authSlice';
+
+import React from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 // Components
 // Importação de ícones.
@@ -16,12 +21,21 @@ import { RiAddCircleFill } from "react-icons/ri";
 
 const Navbar = () => {
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { auth, loading} = useAuth();
+  const { user } = useSelector((state) => state.auth);
+  if(loading){
+    return <div>Carregando...</div>
+  }
+
   // do the logout stuff
   const handlelogout = () => {    
-    // Logout logic here  
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_id');
+    dispatch(logout());
+    dispatch(reset());
 
+    navigate("/login");
   };
 
   return (
@@ -32,21 +46,50 @@ const Navbar = () => {
         <input type="text" placeholder="Pesquisar" />
       </form>
       <ul id="nav-links">
-        <NavLink to="/">
-          <BsHouseDoorFill />
-        </NavLink>
-        <NavLink to="/login">
-          <CiLogin />
-        </NavLink>
-        <NavLink to="/register">
-          <RiAddCircleFill />
-        </NavLink>
+        {auth ? (
+          <>
+            <li>
+              <NavLink to="/">
+                <BsHouseDoorFill />
+              </NavLink>
+            </li>
+            {auth && user && (
+              <>
+                <li>
+                  <NavLink to={`/user/${user._id}`}>
+                    <BsFillPersonFill />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={`/profile/${user._id}`}>
+                    <BsFillCameraFill />
+                  </NavLink>
+                </li>
+              </>              
+            )}
+            <li>
+              <Link onClick={() => handlelogout()} className={style.logout}>
+                <CiLogout />
+              </Link>
+            </li>            
+          </>
+        ) : (
+          <>
+            <li>
+              <NavLink to="/login">
+                <CiLogin />
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/register">
+                <RiAddCircleFill />
+              </NavLink>
+            </li>
+          </>
+        )}
         <NavLink to="/about">
           <FcAbout />
         </NavLink>
-        <Link onClick={() => handlelogout()} className={style.logout}>
-          <CiLogout />
-        </Link>
       </ul>
     </nav>
     // <div className={style.logo}>

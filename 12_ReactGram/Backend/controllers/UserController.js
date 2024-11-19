@@ -58,10 +58,10 @@ const register = async (req, res) => {
   //  Verificando se o email ja existe no banco de dados.
   const checkEmail = await User.findOne({email});
   if(checkEmail){    
-    return res.status(400).send({erros: ["Email ja existe, tente recuperar sua senha."]});
+    return res.status(422).send({errors: ["Email ja existe, tente recuperar sua senha."]});
   } 
   else if(password.length < 6){
-    return res.status(400).json({erros: ["Senha muito fraca, a senha precisa seguir os critérios mínimos!"]});
+    return res.status(422).json({errors: ["Senha muito fraca, a senha precisa seguir os critérios mínimos!"]});
   }else{
     // Processo de criar o usuário.
     try {
@@ -77,7 +77,7 @@ const register = async (req, res) => {
     } catch (error) {
       console.log(error)
       console.error(error.message)      
-      return res.status(400).json({erros: ["Erro ao criar o usuário, tente novamente mais tarde."]})
+      return res.status(400).json({errors: ["Erro ao criar o usuário, tente novamente mais tarde."]})
     }
   };
 };
@@ -88,7 +88,7 @@ const login = async (req, res) => {
   const UserExists = await User.findOne({email});
   const UserExistsUsername = await User.findOne({username: email})
   if(!UserExists && !UserExistsUsername){
-    return res.status(404).json({erros: ["Usuário nao encontrado, tente novamente mais tarde."]});
+    return res.status(404).json({errors: ["Usuário nao encontrado, tente novamente mais tarde."]});
   }else if(UserExists){
     userTry = UserExists;
   }else if(UserExistsUsername){
@@ -97,7 +97,7 @@ const login = async (req, res) => {
 
   const checkPassword = await bcryptjs.compare(password, userTry.password);
   if(!checkPassword){
-    return res.status(400).json({erros: ["Senha invalida, tente novamente ou recupere sua conta."]});
+    return res.status(400).json({errors: ["Senha invalida, tente novamente ou recupere sua conta."]});
   }
   res.status(200).json({
     _id: userTry._id,
@@ -113,7 +113,7 @@ const getCurrentUser = async (req, res) => {
     const { id } = req.params;    
     const user = await User.find(new mongoose.Types.ObjectId(id)).select('-password');
     if(!user){
-      res.status(404).json({erros: ["Acesso não autorizado!"]});
+      res.status(404).json({errors: ["Acesso não autorizado!"]});
     }
     res.status(200).json({user});
   } catch (error) {

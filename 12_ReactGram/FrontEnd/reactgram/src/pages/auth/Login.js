@@ -4,14 +4,26 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import { login, reset } from '../../slices/authSlice';
+
+import Message from '../../components/Message';
+
 const Login = () => {
+  
   // Criando as variáveis.
   const [email, setEmail] = useState('');  
   const [password, setPassword] = useState('');  
   const [errors, setErrors] = useState([]);
   const [msg, setMsg] = useState([]);
+  const [information, setInformation] = useState(null);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { loading, error} = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,45 +55,49 @@ const Login = () => {
 
     setMsg(['Segure firme, estamos autenticando seu login...']);
 
-    console.log("tentando enviar esse body");
-    console.log(newUser);
-
     try {
-      const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/login', newUser)
-
-      console.log(response.status);
-
-      if(response.status !== 200) {
-        setErrors(response.data.errors);
-        setMsg([]);
-        return
-      }
-
-      if(response.status === 200){
-        try {          
-          localStorage.setItem('user_id', response.data._id)
-          localStorage.setItem('token', response.data.token)
-          setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-          setTimeout(() => {
-            navigate('/home')
-          }, 3000);
-        } catch (error) {
-          setErrors(["Fail to register that user token in local session!"]);
-          return
-        }
-      }
-
+      dispatch(login(newUser));
     } catch (error) {
-      // handle with diferent error's.
-      console.log(error.response);
-      console.log(error.response.data.erros[0]);
-      if(error.response && error.response.status === 400){        
-        setErrors([error.response.data.erros[0]]);  
-        setMsg([]);      
-        return
-      }
-      setErrors(["Fatal error, please try again later."])
+      console.log(error);
     }
+    
+
+    // try {
+    //   const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/login', newUser)
+
+    //   console.log(response.status);
+
+    //   if(response.status !== 200) {
+    //     setErrors(response.data.errors);
+    //     setMsg([]);
+    //     return
+    //   }
+
+    //   if(response.status === 200){
+    //     try {          
+    //       localStorage.setItem('user_id', response.data._id)
+    //       localStorage.setItem('token', response.data.token)
+    //       setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
+    //       setTimeout(() => {
+    //         navigate('/home')
+    //       }, 3000);
+    //     } catch (error) {
+    //       setErrors(["Fail to register that user token in local session!"]);
+    //       return
+    //     }
+    //   }
+
+    // } catch (error) {
+    //   // handle with diferent error's.
+    //   console.log(error.response);
+    //   console.log(error.response.data.erros[0]);
+    //   if(error.response && error.response.status === 400){        
+    //     setErrors([error.response.data.erros[0]]);  
+    //     setMsg([]);      
+    //     return
+    //   }
+    //   setErrors(["Fatal error, please try again later."])
+    // }
   }
 
   return (
@@ -111,6 +127,9 @@ const Login = () => {
               </ul>
             }
           </div>
+          
+
+          {error && <Message msg={error} type="error" />}
 
           <div className={styles.buttons}>
             {/* <input className={isDisabled ? (styles.disabled) : styles.submit} id="submit" type="submit" value="Entrar" disabled={isDisabled} /> */}

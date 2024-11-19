@@ -22,3 +22,7 @@ textarea {
   background-color: transparent;
   color: aliceblue;  
 }
+
+li{
+  list-style: none;
+}
