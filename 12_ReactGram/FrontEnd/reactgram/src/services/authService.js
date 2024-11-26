@@ -40,16 +40,31 @@ const login = async (data) => {
 
     if(res){
       console.log(`resposta do fetch ${res}`) 
-      console.log(res)     ;
+      console.log(res._id);
+      console.log('Sequência do Login')
       // verify if local item exists
       if(localStorage.getItem('user')){
         localStorage.removeItem('user');
+        localStorage.removeItem('error');
       }
       if(res.errors && res.errors.length > 0){
         localStorage.setItem('error', JSON.stringify(res.errors));
       }
-      if(res.ok){
+      if(res._id){
+        console.log("A resposta da requisição foi do tipo ok.")
+        if(localStorage.getItem('error')){
+          try {
+            localStorage.removeItem('user');
+          } catch (error) {
+            console.log("Não foi possível remover o item user porque ele não existe.");
+          }
+          localStorage.removeItem('error');
+        }
+        
         localStorage.setItem('user', JSON.stringify(res));        
+      }
+      if(!res.ok){
+        console.log("A resposta da requisição foi do tipo erro.")
       }
     }
     return res;

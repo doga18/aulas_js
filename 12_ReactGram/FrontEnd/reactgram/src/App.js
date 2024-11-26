@@ -18,6 +18,7 @@ import Login from './pages/auth/Login.js';
 import Register from './pages/auth/Register.js';
 import About from './pages/about/About';
 import Profiler from './pages/profiler/Profiler';
+import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
   const { auth, loading } = useAuth();
@@ -37,6 +38,7 @@ function App() {
               <Route path="/login" element={auth ? <Navigate to="/" /> : <Login />} />
               <Route path="/register" element={auth ? <Navigate to="/" /> : <Register />} />
               <Route path="/profile/:id" element={auth ? <Profiler /> : <Navigate to="/login" />} />
+              <Route path="/editProfile/:id" element={auth? <EditProfile /> : <Navigate to="/login" />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </div>          

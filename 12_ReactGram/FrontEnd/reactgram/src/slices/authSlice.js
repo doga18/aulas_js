@@ -11,7 +11,6 @@ const initialState = {
 };
 
 // Register an user and sign in.
-
 export const register = createAsyncThunk("auth/register", async (user, thunkAPI) => {
   const data = await authService.register(user)
   console.log('Resposta do Register!');
@@ -26,6 +25,7 @@ export const register = createAsyncThunk("auth/register", async (user, thunkAPI)
   return data;
 })
 
+// Login an user.
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   const data = await authService.login(user)
   console.log('Resposta do Login!');  
@@ -36,11 +36,9 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   return data;
 });
 
-// logout an user
-
+// Logout an user.
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await authService.logout();  
-  
+  await authService.logout();
 });
   
 
@@ -78,7 +76,7 @@ export const authSlice = createSlice({
     })
     .addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.errors = action.payload;
+      state.error = action.payload;
       state.user = null;
       state.success = false;
     })

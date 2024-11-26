@@ -62,47 +62,6 @@ const Register = () => {
     } catch (error) {
       console.log(error.message);
     }
-
-  //   try {
-  //     const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/register', newUser)
-
-  //     console.log(response.status);
-
-  //     if(response.status !== 201) {
-  //       setErrors(response.data.errors);
-  //       setMsg([]);
-  //       return
-  //     }
-
-  //     if(response.status === 201){
-  //       try {
-  //         console.log("criando os cookies")
-  //         localStorage.setItem('user_id', response.data._id)
-  //         localStorage.setItem('token', response.data.token)
-  //         setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-  //         console.log('User criado!')
-  //         console.log(response.data.token)
-  //         setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-  //         setTimeout(() => {
-  //           navigate('/home')
-  //         }, 3000);
-  //       } catch (error) {
-  //         setErrors(["Fail to register that user token in local session!"]);
-  //         return
-  //       }
-  //     }
-
-  //   } catch (error) {
-  //     // handle with diferent error's.
-  //     console.log(error.response);
-  //     console.log(error.response.data.erros[0]);
-  //     if(error.response && error.response.status === 400){        
-  //       setErrors([error.response.data.erros[0]]);  
-  //       setMsg([]);      
-  //       return
-  //     }
-  //     setErrors(["Erro ao tentar criar a conta, tente novamente mais tarde."])
-  //   }
   }
 
   useEffect(() => {

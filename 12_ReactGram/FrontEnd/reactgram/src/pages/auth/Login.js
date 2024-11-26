@@ -1,8 +1,12 @@
 import React from 'react'
+import './Login.css'
 import styles from './Login.module.css'
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+// Icons for loading
+import { VscIssueReopened } from "react-icons/vsc";
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,20 +20,18 @@ const Login = () => {
   const [email, setEmail] = useState('');  
   const [password, setPassword] = useState('');  
   const [errors, setErrors] = useState([]);
-  const [msg, setMsg] = useState([]);
-  const [information, setInformation] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { loading, error} = useSelector((state) => state.auth);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Resetando os erros.
-    setErrors([]);
-    setMsg([]);
+    setErrors([]);    
 
     if(!email || !password ) {
       setErrors(['Todos os campos devem ser preenchidos corretamente.']);
@@ -53,55 +55,23 @@ const Login = () => {
       password
     }
 
-    setMsg(['Segure firme, estamos autenticando seu login...']);
-
     try {
       dispatch(login(newUser));
     } catch (error) {
       console.log(error);
     }
-    
-
-    // try {
-    //   const response = await axios.post(process.env.REACT_APP_URL_BACKEND+'/api/user/login', newUser)
-
-    //   console.log(response.status);
-
-    //   if(response.status !== 200) {
-    //     setErrors(response.data.errors);
-    //     setMsg([]);
-    //     return
-    //   }
-
-    //   if(response.status === 200){
-    //     try {          
-    //       localStorage.setItem('user_id', response.data._id)
-    //       localStorage.setItem('token', response.data.token)
-    //       setMsg(["Autenticado, aguarde enquanto redirecionamos..."]);
-    //       setTimeout(() => {
-    //         navigate('/home')
-    //       }, 3000);
-    //     } catch (error) {
-    //       setErrors(["Fail to register that user token in local session!"]);
-    //       return
-    //     }
-    //   }
-
-    // } catch (error) {
-    //   // handle with diferent error's.
-    //   console.log(error.response);
-    //   console.log(error.response.data.erros[0]);
-    //   if(error.response && error.response.status === 400){        
-    //     setErrors([error.response.data.erros[0]]);  
-    //     setMsg([]);      
-    //     return
-    //   }
-    //   setErrors(["Fatal error, please try again later."])
-    // }
   }
+
+  // clean all auth states, limpando todos os status de autenticação.
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch]);
 
   return (
     <div className={styles.login}>
+      {loading && <>
+        <h1>Aguarde Carregando!</h1>
+      </>}
       <h1>Efetue seu login</h1>
       <div className={styles.form}>
         <form onSubmit={handleSubmit}>
@@ -118,16 +88,14 @@ const Login = () => {
                   <span className={styles.errors} key={index}>{error}</span>
                 ))}
               </ul>
-            }
-            {msg && msg.length > 0 && 
-              <ul className={styles.msgs}>
-                {msg.map((msg, index) => (
-                  <span className={styles.msgs} key={index}>{msg}</span>
-                ))}
-              </ul>
-            }
+            }            
           </div>
-          
+
+          {loading && 
+            <div className="loading_icon">
+              <VscIssueReopened size="25" />
+            </div>
+          }
 
           {error && <Message msg={error} type="error" />}
 
