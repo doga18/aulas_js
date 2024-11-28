@@ -15,6 +15,11 @@ export const requestConfig = (method, data, token = null, image=null) => {
       method,
       headers: {},
     }
+  } else if (method === "GET"){
+    config = {
+      method,
+      headers: {}
+    }
   } else {
     config = {
       method,

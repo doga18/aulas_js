@@ -17,7 +17,7 @@ import Home from './pages/home/Home.js';
 import Login from './pages/auth/Login.js';
 import Register from './pages/auth/Register.js';
 import About from './pages/about/About';
-import Profiler from './pages/profiler/Profiler';
+import Profile from './pages/profile/Profile.js';
 import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
@@ -37,8 +37,8 @@ function App() {
               <Route path="/" element={auth ? <Home /> : <Navigate to="/login" />} />
               <Route path="/login" element={auth ? <Navigate to="/" /> : <Login />} />
               <Route path="/register" element={auth ? <Navigate to="/" /> : <Register />} />
-              <Route path="/profile/:id" element={auth ? <Profiler /> : <Navigate to="/login" />} />
-              <Route path="/editProfile/:id" element={auth? <EditProfile /> : <Navigate to="/login" />} />
+              <Route path="/profile/:id" element={auth ? <Profile /> : <Navigate to="/login" />} />
+              <Route path="/profile/" element={auth ? <EditProfile /> : <Navigate to="/login" />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </div>          

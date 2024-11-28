@@ -12,8 +12,39 @@
 }
 
 .profile-image {
-  width: 150px;
-  height: 150px;  
+  width: 15em;
+  height: 15em;
   margin-bottom: 1em;
-  border-radius: 50%;
+  border-radius: 50%;  
 }
+
+.profile-image label img {
+  width: 240px;
+  height: 320px;
+  border-radius: 45%;
+  margin-left: 50%;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  color: aliceblue;
+  font-weight: bolder;
+  padding: 40px 20px;
+}
+
+.name_user {
+  margin: 1em 0;
+  font-size: 2em;
+  font-family: "Raleway", serif;  
+  font-optical-sizing: auto;  
+  font-style: normal;
+}
+
+.title {
+  margin: .35em 0;
+  font-size: 1.5em;
+}
+

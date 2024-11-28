@@ -1,0 +1,12 @@
+.profileImage {
+  width: 240px;
+  height: 320px;
+  border-radius: 20%;  
+  margin: 20px 10px;
+}
+
+.profile-header{
+  display: flex;
+  flex-direction: column;
+  cursor: progress;
+}

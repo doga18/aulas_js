@@ -13,6 +13,34 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
 
+// Importando o multer para lidar com requisições multipart/form-data
+const multer = require("multer");
+
+// Definition of store of the multer
+const storage = multer.diskStorage({
+  destionation: (req, file, cb) => {
+    cb(null, `./uplouds/users`);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+});
+
+// Defining the limits for the file size and allowed file types
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb('That file is not supported!')
+    }
+  }
+}).single('profileImage');
+
 // Gerando o user Token, Após a autenticação é esse token que será criado.
 const generateToken = (id) => {  
   return jwt.sign({id}, secret, {expiresIn: "1d"});
@@ -111,11 +139,11 @@ const getCurrentUser = async (req, res) => {
   try {    
     // Pegando por params    
     const { id } = req.params;    
-    const user = await User.find(new mongoose.Types.ObjectId(id)).select('-password');
+    const user = await User.findOne(new mongoose.Types.ObjectId(id)).select('-password');
     if(!user){
       res.status(404).json({errors: ["Acesso não autorizado!"]});
     }
-    res.status(200).json({user});
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     res.status(403).json({errors: ['A página que você procura não existe ou foi removida']})
@@ -128,7 +156,8 @@ const updateUser = async (req, res) => {
     const reqUser = await req.user;    
     const { username, password, bio } = req.body;    
     // Buscando um usuário pelo ID.
-    const selectedUser = await User.findOne(new mongoose.Types.ObjectId(reqUser._id));    
+    const selectedUser = await User.findOne(new mongoose.Types.ObjectId(reqUser._id));
+
     try {
       if(username){
         selectedUser.username = username;
@@ -148,9 +177,10 @@ const updateUser = async (req, res) => {
           console.log("Arquivo atualizado com sucesso");
         }
         selectedUser.profileImage = req.file.filename;
-      }      
+      }
+      
       await selectedUser.save();
-      res.status(200).json({success: "User updated successfully \n " + selectedUser});
+      res.status(200).json({success: "User updated successfully"});
     } catch (error) {
       console.log(error);
       res.status(503).json({errors: ['houve um erro ao salvar o usuário, tente novamente.']});

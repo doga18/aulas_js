@@ -49,26 +49,26 @@ const Navbar = () => {
         {auth ? (
           <>
             <li>
-              <NavLink to="/">
+              <NavLink to="/" title="Página Inicial">
                 <BsHouseDoorFill />
               </NavLink>
             </li>
             {auth && user && (
               <>
                 <li>
-                  <NavLink to={`/user/${user._id}`}>
+                  <NavLink to={`/profile/`} title="Editar Perfil">
                     <BsFillPersonFill />
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to={`/profile/${user._id}`}>
+                  <NavLink to={`/profile/${user._id}`} title="Ver Perfil">
                     <BsFillCameraFill />
                   </NavLink>
                 </li>
               </>              
             )}
             <li>
-              <Link onClick={() => handlelogout()} className={style.logout}>
+              <Link onClick={() => handlelogout()} className={style.logout} title="Sair">
                 <CiLogout />
               </Link>
             </li>            

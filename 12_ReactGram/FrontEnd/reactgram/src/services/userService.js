@@ -18,9 +18,39 @@ const profile = async(data, token, id) => {
   }
 }
 
+// Update user data and profile image.
+const updateDataUser = async(data, token) => {
+  const config = requestConfig("PUT", data, token, true);
+
+  try {
+    // try to update profile image and data.
+    const res = await fetch(api + `/user/user/`, config)
+      .then((response) => response.json())
+      .catch((e) => console.log(`erro: ${e}`));
+    return res
+  } catch (error) {
+    console.log(`erro: ${error}`);
+  }
+}
+
+// Get user details and profile image
+const getUserDetais = async(id, token) => {  
+  const config = requestConfig("GET", token);
+
+  try {
+    const res = await fetch(api + `/user/${id}`, config)
+      .then((res) => res.json())
+      .catch((e) => console.log(`erro: ${e}}`));
+    return res;
+  } catch (error) {
+    console.log(`erro: ${error}`);
+  }
+}
 
 const userService = {
-  profile
+  getUserDetais,
+  profile,
+  updateDataUser
 }
 
 export default userService;

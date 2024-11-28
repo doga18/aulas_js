@@ -26,3 +26,34 @@ textarea {
 li{
   list-style: none;
 }
+
+.btn {
+  text-decoration: none;
+  color: aliceblue;
+  background-color: #000000;
+  border: 1px solid #3d3b3b5b;
+  border-radius: 9px;
+  padding: 17px 15px;
+  margin: 10px 12px;
+  box-shadow: 2px 2px 2px 1px rgba(204, 180, 100, 0.281);
+  transition: .75s;
+}
+
+.btn-success {
+  text-decoration: none;
+  color: aliceblue;
+  background-color: #000000;
+  border: 1px solid #3d3b3b5b;
+  border-radius: 9px;
+  padding: 17px 15px;
+  margin: 10px 12px;
+  box-shadow: 2px 2px 2px 1px rgba(204, 180, 100, 0.281);
+  transition: .75s;
+}
+
+.btn-success:hover {
+  background-color: #163501;
+  color:rgb(230, 230, 178);
+  font-weight: bolder;
+  box-shadow: 2px 2px 2px 1px rgba(226, 155, 1, 0.486);
+}
