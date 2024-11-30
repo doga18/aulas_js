@@ -21,6 +21,10 @@
   border-radius: 9px;
 }
 
+#title {
+  color: aliceblue;
+}
+
 .title p a:hover {
   color: aliceblue;
   background-color: rgb(8, 1, 24);

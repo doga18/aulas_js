@@ -1,10 +1,12 @@
 export const api = 'http://localhost:3001/api';
 export const uploads = "http://localhost:3001/uploads";
+export const files = "http://localhost:3001";
 
 export const requestConfig = (method, data, token = null, image=null) => {
   let config 
 
   if(image){
+    console.log('dado informado contem arquivo de imagem', data, image)
     config = {
       method,
       body: data,
@@ -18,7 +20,7 @@ export const requestConfig = (method, data, token = null, image=null) => {
   } else if (method === "GET"){
     config = {
       method,
-      headers: {}
+      headers: {},      
     }
   } else {
     config = {

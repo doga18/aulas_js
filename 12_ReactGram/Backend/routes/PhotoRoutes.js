@@ -31,7 +31,7 @@ const { verify } = require('jsonwebtoken');
 router.get('/getallphotos', authGuard, validate, getPhotos);
 router.get('/queryphotos', authGuard, validate, searchPhoto);
 // Get all posts with user has created.
-router.post('/getallphoto/:id', authGuard, validate, getUserPhotos)
+router.get('/getallphotos/:id', authGuard, validate, getUserPhotos)
 
 // Routes for photos restfull
 router.post('/', authGuard, imageUpload.single('image'), photoValidation(), validate, createPhoto);

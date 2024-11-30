@@ -39,8 +39,8 @@
 
 .logout {
   text-decoration: none;
-  color: yellow;
-  background-color: #303030;
+  color: rgb(255, 255, 0);
+  background-color: #30303000;
   border: 1px solid transparent;
   border-radius: 2px;
   transition: .75s;
@@ -48,6 +48,10 @@
 
 .logout:hover {  
   color: red;
+}
+
+.about svg {
+  color: aliceblue;
 }
 
 #nav {

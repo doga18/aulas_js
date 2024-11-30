@@ -87,8 +87,8 @@ const Navbar = () => {
             </li>
           </>
         )}
-        <NavLink to="/about">
-          <FcAbout />
+        <NavLink to="/about" >
+          <FcAbout className={style.about} />
         </NavLink>
       </ul>
     </nav>

@@ -1,0 +1,92 @@
+.details_img img {
+  width: auto;
+  height: 80vh;
+  border-radius: 3%;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.details_img {
+  color: rgba(240, 248, 255, 0.582);
+  transition: .75s;
+  padding-bottom: 20px;
+  margin: 20px 0 20px auto;
+  padding: 30px 15vh;
+  background-color: #031314;  
+  border-radius: 10px;
+  box-shadow: 20px 15px 35px rgba(0, 0, 0, 0.5);
+  
+}
+
+.details_img:hover {
+  color: rgb(255, 255, 255);
+}
+
+.details_img {
+  display: flex;
+  justify-content: row;
+  align-items: center;
+}
+
+.details_img:first-child {
+  align-items: start;
+}
+
+.img_control {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+.itens_names {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.atributes {
+  margin: 0 0 0 20px;  
+}
+
+.itens_interacions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;  
+}
+
+.coments {
+  margin-top: 6vh;
+}
+
+.groupComment {
+  display: flex;
+  justify-content: start;
+  flex-direction: row;
+  margin: 2px auto 5px 2px;  
+}
+
+.nameCommentUser {
+  color: white;
+  font-weight: bold;
+  margin-right: 15px;
+  transition: .75s;
+  cursor: pointer;
+}
+
+.nameCommentUser:hover {
+  color: rgb(150, 150, 150);
+}
+
+.commentUnicUser {
+  color:rgb(255, 249, 241);
+}

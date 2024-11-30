@@ -10,10 +10,10 @@ const path = require("path");
 
 const createPhoto = async (req, res) => {
   const { title, description } = req.body;
-  console.log(title, req.file);
+  //console.log(title, req.file);
   const userId = req.user._id;
   const userName = req.user.username;
-  console.log(userId, userName, title);
+  //console.log(userId, userName, title);
   // Daria para pegar a photo direto aqui da seguinte forma, nome do arquivo
   // const image = req.file.filename;
   // console.log(image);
@@ -88,7 +88,7 @@ const getPhoto = async (req, res) => {
       if(tryGetPhoto === null){
         return res.status(404).json({ errors: ['That photo is not exists!']});
       }
-      return res.status(200).json({"success": tryGetPhoto});
+      return res.status(200).json(tryGetPhoto);
     } catch (error) {
       return res.status(500).json({ errors: [error]});
     }

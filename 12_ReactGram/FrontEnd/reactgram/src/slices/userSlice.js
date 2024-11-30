@@ -44,7 +44,11 @@ export const getDetailsProfile = createAsyncThunk(
   "user/details",
   async(user, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
+    // Isso seria para ler direto do item setado localmente,
+    //const infolocal = localStorage.getItem('user');
+    //const id = JSON.parse(infolocal)._id;
     const id = thunkAPI.getState().auth.user._id;
+    
     const data = await userService.getUserDetais(user, token, id);
     if(data.errors){
       return thunkAPI.rejectWithValue(data.errors[0])
@@ -112,8 +116,9 @@ export const userSlice = createSlice({
         .addCase(getDetailsProfile.fulfilled, (state, action) => {
           state.loading = false;
           state.error = false;
-          state.success = action.payload;
-          state.message = "Dados carregados com sucesso!"
+          state.success = true;
+          state.user = action.payload;
+          state.message = null;
         })
     }
 });
