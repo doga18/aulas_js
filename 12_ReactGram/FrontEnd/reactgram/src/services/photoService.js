@@ -1,7 +1,6 @@
 import { api, requestConfig } from '../utils/config';
 
 // Insert new Post about Photo.
-
 const createPost = async(data, token) => {
   console.log('token sendo informado!', token);
   const config = requestConfig("POST", data, token, true);
@@ -15,7 +14,6 @@ const createPost = async(data, token) => {
     console.log(error);
   }
 }
-
 // Get all posts for the home page.
 const getPosts = async(data, token) => {  
   const config = requestConfig("GET", data, token);
@@ -30,7 +28,6 @@ const getPosts = async(data, token) => {
     console.log(error);
   }
 }
-
 // Get all photos of posts, if the owner is who ask for them.
 const getUserPhotos = async(data, id, token) => {
   const config = requestConfig("GET", data, token);
@@ -44,7 +41,6 @@ const getUserPhotos = async(data, id, token) => {
     console.log(error);
   }
 }
-
 // Get detail photo.
 const getDetailPhoto = async(data, token) => {
   const config = requestConfig("GET", data, token);  
@@ -57,7 +53,6 @@ const getDetailPhoto = async(data, token) => {
     console.log(error);
   }
 }
-
 // Delete especific photo.
 const deletePhoto = async(id_photo, token) => {
   const config = requestConfig("DELETE", id_photo, token);
@@ -70,7 +65,43 @@ const deletePhoto = async(id_photo, token) => {
     console.log(error);
   }
 }
+// Update a photo
+const updatePhoto = async(data, id, token) => {
+  const config = requestConfig("PUT", data, token);  
+  try {
+    const res = await fetch(api + "/photos/" + id, config)
+      .then((res) => res.json())
+      .catch((err) => err)
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+// Like a photo.
+const likeAPhoto = async(id, token) => {
+  const config = requestConfig("POST", null, token);
 
+  try {
+    const res = await fetch(api + "/photos/action/like/" + id, config)
+      .then((res) => res.json())
+      .catch((err) => err);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+// Add comment to a photo.
+const commentAPhoto = async(data, id, token) => {
+  const config = requestConfig("POST", data, token);  
+  try {
+    const res = await fetch(api + "/photos/action/comment/" + id, config)
+      .then((res) => res.json())
+      .catch((err) => err);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // Exports methods about photoService
 
 const photoService = {
@@ -78,7 +109,10 @@ const photoService = {
   getPosts,
   getUserPhotos,
   deletePhoto,
-  getDetailPhoto
+  getDetailPhoto,
+  updatePhoto,
+  likeAPhoto,
+  commentAPhoto
 }
 
 export default photoService;

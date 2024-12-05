@@ -44,37 +44,28 @@ const editPhoto = async (req, res) => {
     const { title, description} = req.body;  
     const reqUser = req.user;
     const photo = await Photo.findById(id);
-
-    console.log(reqUser._id);
-    console.log(photo.userId);
-
+    //console.log(reqUser._id);
     // Check if the photo exists.
     if(!photo){
       return res.status(422).json({ errors: ['That photo is not exists!']});
     }
-
     // Check if the photo belongs to the user who is trying to edit it.
     if(!photo.userId.equals(reqUser._id)){
       return res.status(422).json({ errors: ['Are you not authorized to edit this photo!']});
     }
-
     if(title === photo.title && description === photo.description){
       return res.status(200).json({ errors: ['You trying edit this photo, but that information is exactly equal, try with another informations!']});
     }
-
     if(title){
       photo.title = title;
     }
-
     if(description){
       photo.description = description;
     }
     await photo.save();
-    return res.status(200).json({ 'success': 'Photo saved successfully!'});
-
-
-
+    return res.status(200).json(photo);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ errors: ['An error occurred while trying to edit the photo!']});
   }
 
@@ -82,7 +73,8 @@ const editPhoto = async (req, res) => {
 const getPhoto = async (req, res) => {
   const { id } = req.params;
 
-    const tryGetPhoto = await Photo.findById(id).select('-userId');
+    //const tryGetPhoto = await Photo.findById(id).select('-userId');
+    const tryGetPhoto = await Photo.findById(id);
 
     try {
       if(tryGetPhoto === null){
@@ -193,12 +185,17 @@ const giveLikePhoto = async (req, res) => {
   try {
     // Verify if the user already likes this photo.
     if(sPhoto.likes.includes(reqUser._id)){
-      return res.status(401).json({ errors: ['User already likes this photo!']})
+      // If the user already likes, then that action will be erased that like.
+      await sPhoto.likes.remove(reqUser._id);
+      sPhoto.save();
+      return res.status(200).json({"success": `Unliked from ID:${reqUser._id} Name:${reqUser.username}!`})
+      //return res.status(401).json({ errors: ['User already likes this photo!']})
     }
     
-    const tryLike = await sPhoto.likes.push(reqUser._id);    
+    const tryLike = await sPhoto.likes.push(reqUser._id);
     await sPhoto.save();
-    return res.status(200).json({"success": `Liked from ID:${reqUser._id} Name:${reqUser.username}!`})
+    //return res.status(200).json({"success": `Liked from ID:${reqUser._id} Name:${reqUser.username}!`})
+    return res.status(200).json(sPhoto);
   } catch (error) {
     console.log(error);
     return res.status(422).json({ errors: ["Error while try to like in that photo."]})
@@ -259,7 +256,7 @@ const createCommentPhoto = async (req, res) => {
     const newComment = cPhoto.comments.push(userComment);
     await cPhoto.save();
 
-    return res.status(201).json({"success": `Comment created ${userComment}`})
+    return res.status(201).json(userComment);
 
   } catch (error) {
     return res.status(404).json({ errors: ["Internal error, try again later."]})

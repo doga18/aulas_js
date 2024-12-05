@@ -90,3 +90,50 @@
 .commentUnicUser {
   color:rgb(255, 249, 241);
 }
+
+#photo {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 2em;
+}
+
+#photo img {
+  width: 100%;
+}
+
+.message-container {
+  margin: 1em 0;
+}
+
+.comments {
+  text-align: left;
+
+}
+
+.comment form {
+  margin-bottom: 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #363636;
+}
+
+.author {
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.author a {
+  text-decoration: none;
+  cursor: pointer;
+  margin: 0 15px 0 0px;
+}
+
+
+#photo .author img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 0.5em;
+}
+

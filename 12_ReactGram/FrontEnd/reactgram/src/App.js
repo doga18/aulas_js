@@ -20,6 +20,7 @@ import About from './pages/about/About';
 import Profile from './pages/profile/Profile.js';
 import EditProfile from './pages/EditProfile/EditProfile';
 import PhotoDetail from './pages/photos/PhotoDetail';
+import Search from './pages/search/Search';
 
 function App() {
   const { auth, loading } = useAuth();
@@ -41,6 +42,7 @@ function App() {
               <Route path="/profile/:id" element={auth ? <Profile /> : <Navigate to="/login" />} />
               <Route path="/profile/" element={auth ? <EditProfile /> : <Navigate to="/login" />} />
               <Route path="/photos/:id" element={auth ? <PhotoDetail /> : <Navigate to="/login" />} />
+              <Route path="/search" element={auth ? <Search /> : <Navigate to="/login" />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </div>          

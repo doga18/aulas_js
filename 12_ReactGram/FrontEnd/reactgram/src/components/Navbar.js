@@ -10,10 +10,12 @@ import { logout, reset } from '../slices/authSlice';
 
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 // Components
+
 // Importação de ícones.
-import {BsSearch, BsHouseDoorFill, BsFillPersonFill, BsFillCameraFill, BsFillBookmarkFill } from 'react-icons/bs'
+import { BsSearch, BsHouseDoorFill, BsFillPersonFill, BsFillCameraFill, BsFillBookmarkFill } from 'react-icons/bs'
 import { FcAbout } from "react-icons/fc";
 import { CiLogin } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
@@ -23,6 +25,9 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Variables
+  const [query, setQuery] = useState('');
 
   const { auth, loading} = useAuth();
   const { user } = useSelector((state) => state.auth);
@@ -38,12 +43,21 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if(query){
+      console.log('pesquisa é: ', query);
+      navigate(`/search?q=${query}`);
+    }
+    
+  };
+
   return (
     <nav id="nav">
       <Link to="/" className={style.title}>ReactGram</Link>
-      <form>
+      <form onSubmit={handleSearch}>
         <BsSearch />
-        <input type="text" placeholder="Pesquisar" />
+        <input type="text" placeholder="Pesquisar" onChange={(e) => setQuery(e.target.value)} />
       </form>
       <ul id="nav-links">
         {auth ? (

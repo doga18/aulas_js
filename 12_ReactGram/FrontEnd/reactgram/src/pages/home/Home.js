@@ -8,13 +8,16 @@ import { Link } from 'react-router-dom'
 import { uploads } from '../../utils/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
+import { useResetComponentMessage} from '../../hooks/useResetComponentMessage';
 
 // Components
 import Message from '../../components/Message';
 import Post from '../../components/Post';
+import PhotoItem from '../../components/PhotoItem';
+import LikeContainer from '../../components/LikeContainer'
 
 // Redux
-import { getPosts } from '../../slices/photoSlice';
+import { getPosts, likeAPhoto } from '../../slices/photoSlice';
 import { user } from '../../slices/authSlice';
 
 
@@ -22,6 +25,7 @@ import { user } from '../../slices/authSlice';
 const Home = () => {
   // initialize functions
   const dispatch = useDispatch();
+  const resetMessage = useResetComponentMessage(dispatch);
   //const navigate = useNavigate();
 
   // call all variables type use state  
@@ -41,7 +45,7 @@ const Home = () => {
     success: authSuccess
   } = useSelector((state) => state.auth);
 
-  const [ listPosts, setListPosts] = useState([]);
+  const [listPosts, setListPosts] = useState([]);
 
   useEffect(() => {
     dispatch(getPosts())
@@ -50,27 +54,37 @@ const Home = () => {
 
   useEffect(() => {
     if(photo){
-      setListPosts(photo);
+      setListPosts(photo.data);
     }
   }, [photo])
 
+  // Handle with likes
+  const handleLike = ({id}) => {
+    // Implement like logic here.
+    
+    // Tentando dar Like da foto.
+    console.log('tentando dar like na phot id: ', id);
+    //dispatch(likeAPhoto(id));
+    resetMessage();
+  }
 
+  // console.log(listPosts);
 
   return (
-    <div className="index">
-      <div className="home">      
-        <h1 className={styles.title}>
-          Bem vindo ao ReactGram, Inspirado no Instagram.
-          <p>Api Key: <Link to={process.env.REACT_APP_URL_BACKEND} target="_blank">{process.env.REACT_APP_URL_BACKEND}</Link></p>
-        </h1>
-        <span className={styles.subtitle}>Para Acessar, Faça seu <Link to="/login">Login</Link> ou <Link to="/register">Crie sua conta.</Link></span>
-      </div>
-      {loading &&
-        <div className={styles.loading}>
-          <span>
-            Aguarde enquanto a página é carregada.
-          </span>
-        </div>
+    <div className="home">      
+      {listPosts && listPosts.length >= 0 &&
+        listPosts.map((photo, index) => (
+          <div key={photo._id}>
+            <PhotoItem photo={photo} key={index}/>
+              
+            <LikeContainer photo={photo} user={userAuth} handleLike={handleLike}/>
+          </div>
+        ))
+      }
+      {listPosts && listPosts.length === 0 &&
+        <h2 className="no-photos">
+          Ainda não há fotos publicadas.
+        </h2>
       }
       {!loading && listPosts &&
         <Post list={listPosts} />
@@ -79,6 +93,7 @@ const Home = () => {
         <Message msg={error} type="error" />
       }
     </div>
+    
   )
 }
 

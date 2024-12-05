@@ -17,7 +17,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 // Redux
 import { getDetailsProfile, resetMessage as rmUser } from '../../slices/userSlice';
-import { newPost, resetMessage as rmPhoto, getUserPhotos, deletePhoto } from '../../slices/photoSlice';
+import { 
+        newPost,
+        resetMessage as rmPhoto,
+        getUserPhotos,
+        deletePhoto,
+        updatePhoto } from '../../slices/photoSlice';
 
 const Profile = () => {
   const { id } = useParams();
@@ -43,6 +48,10 @@ const Profile = () => {
   const [imagePost, setImagePost] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [message, setMessage] = useState('');
+  const [editImage, setEditImage] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editId, setEditId] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   // load data about user.
   useEffect(() => {
@@ -97,7 +106,8 @@ const Profile = () => {
 
   // Functions
   // Handle whith a file about photo to insert.
-  const handlePhotoFile = (e) => {
+  const handlePhotoFile = (e, newPost=false, editPost=false) => {
+    // Devido a regra de negócio não se atualiza a foto, somente os dados dela.
     console.log('Tentativa de enviar uma foto.')  
     const fileInput = e.target;
     const file = e.target.files[0];
@@ -108,8 +118,16 @@ const Profile = () => {
       fileInput.value = '';
       return;
     }
-    if(AcceptedFiles.includes(file.type)){
+    if(newPost){
+      console.log('Nova foto adicionada.');
+      console.log(file);
       setImagePost(file);
+      return;
+    }
+    if(editPost){
+      console.log('Foto para editar adicionada.');
+      console.log(file);
+      setEditImage(file);
       return;
     }
   }
@@ -145,6 +163,69 @@ const Profile = () => {
       setMessage(null);
     }, 3000);
   }
+
+  // Handle with update
+  const handleUpdate = async(e) => {
+    e.preventDefault();    
+    setEditImage(photo.image);
+    console.log('foto informadoa no set edit image', editImage);
+    // Created that object to send to edit.
+    const formPhotoEdit = {};
+    if(editTitle){
+      formPhotoEdit.title = editTitle;      
+    }
+    if(editDescription){
+      formPhotoEdit.description = editDescription;
+    }
+    formPhotoEdit._id = editId;
+    
+    const tryUpdate = await dispatch(updatePhoto(formPhotoEdit));
+
+    if(tryUpdate){
+      hideOrShowForm();
+    }
+
+    setTimeout(() => {
+      setErrorMsg(null);
+      setMessage(null);      
+    }, 3000);
+
+  }
+  // Function to hide or show forms editPhoto.
+  const hideOrShowForm = () => {
+    // Add or remove class Hide.
+    // That toggle was to be used to alternate methods removing or adding classes.
+    // Example, toggle, remove hide if hide is alerady there.
+    // if note, add hide, em portugues, o toggle alterna os estados.
+    console.log('Alterando status de hide.')
+    newPhotoForm.current.classList.toggle("hide");
+    editPhotoForm.current.classList.toggle("hide");
+  };
+  // Get object item 'photo' and send to ref formedit.
+  const handleEdit = async(photo) => {
+    // If photo already show, does nothing. If not, show that.
+    console.log('Tentativa de editar uma foto.')
+    if(editPhotoForm.current.classList.contains("hide")){
+      hideOrShowForm();
+    }
+    //console.log(photo);
+    console.log('o id da foto é ', photo._id);
+    //console.log('caminho da é', `${files}/` + photo.image);
+
+    const srcPhoto = `${files}/`+photo.image;
+
+    await setEditImage(srcPhoto);
+    await setEditTitle(photo.title);
+    await setDescription(photo.description);
+    await setEditId(photo._id); // Save id to use in update photo.
+
+    console.log('foto informadoa no set edit image', srcPhoto);
+  };
+    // Handle with cancel edit
+    const handleCancelEdit = async() => {
+      console.log('Cancelando edição.');      
+      hideOrShowForm();
+    }
 
    // Handle to delete file
   const handleDeleteFile = async(id) => {    
@@ -213,7 +294,7 @@ const Profile = () => {
                   type="file"
                   name="image"
                   id="image"
-                  onChange={handlePhotoFile}
+                  onChange={(e) => handlePhotoFile(e, true, false)}
                   accept="image/png|image/jpeg|image/jpg"
                 />
               </label>
@@ -237,7 +318,41 @@ const Profile = () => {
               }
             </form>            
           </div>
-          <div className="user-photos">
+          <div className="edit-photo hide" ref={editPhotoForm}>
+            <p>Editando: </p>
+            <div className="edit">
+              {editImage && (
+                <img
+                  src={editImage}
+                  alt={editTitle} title={editTitle}/>                  
+                )
+              }
+                <form onSubmit={handleUpdate}>                  
+                  <input
+                    type="text"
+                    name="editTitle"
+                    id="editTitle"
+                    placeholder="Novo título"
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    value={editTitle || ''}
+                  />
+                  <input
+                    type="text"
+                    name="editDescription"
+                    id="editDescription"
+                    onChange={(e) => setEditDescription(e.target.value)}
+                    value={editDescription || ''}
+                  />
+                  <input type="submit" className="btn" value="Atualizar..." />
+                  <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar</button>
+                  {message && <Message msg={message} type="success"/>}
+                  {errorMsg && <Message msg={errorMsg} type="error"/>}
+                </form>
+              </div>
+          </div>
+        </>
+      }
+      <div className="user-photos">
             <h2>Fotos Publicadas</h2>
             <div className="photos-container">
               {photos && photos.map((item) => (                
@@ -251,10 +366,8 @@ const Profile = () => {
                       <div className="actions">
                         <Link to={`/photos/${item._id}`}>
                           <BsFillEyeFill />
-                        </Link>                        
-                        <Link to={`/photos/edit/${item._id}`}>
-                          <BsPencilFill />
                         </Link>
+                        <BsPencilFill onClick={() => handleEdit(item)}/>
                         <BsXLg onClick={() => handleDeleteFile(item._id)}/>
 
                       </div>
@@ -273,8 +386,6 @@ const Profile = () => {
               }
             </div>
           </div>
-        </>
-      }
     </div>
   )
 }
