@@ -42,7 +42,7 @@ function App() {
               <Route path="/profile/:id" element={auth ? <Profile /> : <Navigate to="/login" />} />
               <Route path="/profile/" element={auth ? <EditProfile /> : <Navigate to="/login" />} />
               <Route path="/photos/:id" element={auth ? <PhotoDetail /> : <Navigate to="/login" />} />
-              <Route path="/search" element={auth ? <Search /> : <Navigate to="/login" />} />
+              <Route path="/search/" element={auth ? <Search /> : <Navigate to="/login" />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </div>          

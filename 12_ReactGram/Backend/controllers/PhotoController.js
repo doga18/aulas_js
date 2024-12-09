@@ -73,16 +73,16 @@ const editPhoto = async (req, res) => {
 const getPhoto = async (req, res) => {
   const { id } = req.params;
 
-    //const tryGetPhoto = await Photo.findById(id).select('-userId');
-    const tryGetPhoto = await Photo.findById(id);
-
     try {
+      //const tryGetPhoto = await Photo.findById(id).select('-userId');
+      const tryGetPhoto = await Photo.findById(id);
+
       if(tryGetPhoto === null){
         return res.status(404).json({ errors: ['That photo is not exists!']});
       }
       return res.status(200).json(tryGetPhoto);
     } catch (error) {
-      return res.status(500).json({ errors: [error]});
+      return res.status(500).json({ errors: ["A error occurred while trying to get photo! Internal error."]});
     }
   };
 const getPhotos = async (req, res) => {
@@ -118,10 +118,14 @@ const getUserPhotos = async (req, res) => {
 const searchPhoto = async(req, res) => {
   const {q} = req.query;
 
-  const result = await Photo.find({}).where({ title: new RegExp(q, 'i') }).exec();
-
-  console.log(q);
-  return res.status(200).json({success: result});
+  try {
+    const result = await Photo.find({}).where({ title: new RegExp(q, 'i') }).exec();
+    //console.log(q);
+    //return res.status(200).json({success: result});
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({errors: [`Fail to realize that search: \n ${error.message}. Complete error: \n`, error]});
+  }
 }
 const deletePhoto = async (req, res) => {
   // function to delete a photo thas the user is owns.

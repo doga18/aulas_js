@@ -102,8 +102,19 @@ const commentAPhoto = async(data, id, token) => {
     console.log(error);
   }
 }
+// Search photo by title.
+const searchPhotos = async(query, token) => {
+  const config = requestConfig("GET", null, token);
+  try {
+    const res = await fetch(api + "/photos/queryphotos?q=" + query, config)
+      .then((res) => res.json())
+      .catch((err) => err);
+      return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // Exports methods about photoService
-
 const photoService = {
   createPost,
   getPosts,
@@ -112,7 +123,8 @@ const photoService = {
   getDetailPhoto,
   updatePhoto,
   likeAPhoto,
-  commentAPhoto
+  commentAPhoto,
+  searchPhotos
 }
 
 export default photoService;

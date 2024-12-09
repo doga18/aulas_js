@@ -125,6 +125,19 @@ export const commentAPhoto = createAsyncThunk(
     }
     return dataComment;
   })
+// Search photo by title
+export const searchPhotos = createAsyncThunk(
+  "photo/search",
+  async(data, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const dataSearch = await photoService.searchPhotos(data, token);
+    if(dataSearch.errors){
+      return thunkAPI.rejectWithValue(dataSearch.errors[0])
+    }
+    return dataSearch;
+  }
+)
+
 
 // Construct slices about photo service
 export const photoSlice = createSlice({
@@ -305,6 +318,29 @@ export const photoSlice = createSlice({
         state.success = false;
         state.error = action.payload;
         state.message = null;
+      })
+      // Search photo by title, function searchPhotos
+      .addCase(searchPhotos.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+        state.success = false;
+        state.message = "Pesquisando...";
+      })
+      .addCase(searchPhotos.fulfilled, (state, action) => {
+        state.message = null;
+        state.loading = false;
+        state.message = null;
+        state.error = false;
+        state.success = true;
+        state.photo = action.payload;
+      })
+      .addCase(searchPhotos.rejected, (state, action) => {
+        state.message = null;
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+        state.photo = {};
+        state.message = "Falha ao pesquisar!";
       })
   }
 })
