@@ -131,3 +131,6 @@ class Smartphone extends Product {
 const Xioami = new Smartphone('Xioami Mi 10', 4499.00, 6.5, 'Xioami', ['Preto', 'Prata', 'Azul', 'Verde', 'Vermelho']);
 
 Xioami.showColors()
+
+
+const object2 = new Product('tablet', 2232.12, 'tablet', [')
